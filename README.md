@@ -49,3 +49,9 @@ CREATE app/src/app/app.component.ts (213 bytes)
 ✔ Packages installed successfully.
     Directory is already under version control. Skipping initialization of git.
 ```
+
+### Install dependencies
+`npm install`
+
+### Run app
+`npm run start`
