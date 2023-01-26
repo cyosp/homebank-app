@@ -1,4 +1,4 @@
-# Homebank
+# HomeBank
 App based on Homebank XML file
 
 ## Development
