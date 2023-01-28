@@ -1,1 +1,11 @@
+<div>
+  <label>Load HomeBank file: </label>
+  <input type="file" accept=".xhb" (change)="homebankFileChanged($event)">
+  <hr/>
+  <div *ngIf="homebankFileLoaded">
+    <label>Title: </label>
+    <span>{{ title }}</span>
+  </div>
+</div>
+
 <router-outlet></router-outlet>
