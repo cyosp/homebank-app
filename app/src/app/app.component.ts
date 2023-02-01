@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Account} from './model/account';
 import {AccountService} from "./service/account.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent {
   title: string;
   accounts: Account[];
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService,
+              private titleService: Title) {
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
     this.homebankFile = new Blob();
@@ -52,6 +54,7 @@ export class AppComponent {
 
   loadTitle() {
     this.title = this.homebankXmlDocument.evaluate("/homebank/properties/@title", this.homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
+    this.titleService.setTitle(this.title);
   }
 
   loadAccounts() {
