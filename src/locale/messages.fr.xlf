@@ -2,8 +2,8 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
-      <!-- app -->
-      <trans-unit id="app-load-homebank-file" datatype="html">
+      <!-- main -->
+      <trans-unit id="main-load-homebank-file" datatype="html">
         <target>Charger le fichier HomeBank : </target>
       </trans-unit>
       <!-- accounts -->

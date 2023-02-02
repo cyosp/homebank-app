@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
-import {AccountService} from "./service/account.service";
-import {SharedDataService} from "./service/shared-data.service";
+import {AccountService} from "../../service/account.service";
+import {SharedDataService} from "../../service/shared-data.service";
 import {Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.sass']
 })
-export class AppComponent {
+export class MainComponent {
   fileReader: FileReader;
   domParser: DOMParser;
   homebankFileLoaded: boolean;

@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { MainComponent } from './component/main/main.component';
 import {AccountService} from "./service/account.service";
 import {AccountsComponent} from "./component/accounts/accounts.component";
 import {SharedDataService} from "./service/shared-data.service";
 
 @NgModule({
   declarations: [
-    AppComponent,
+    MainComponent,
     AccountsComponent
   ],
   imports: [
@@ -20,6 +20,6 @@ import {SharedDataService} from "./service/shared-data.service";
     AccountService,
     SharedDataService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [MainComponent]
 })
 export class AppModule { }
