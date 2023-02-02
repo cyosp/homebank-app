@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {Account} from './model/account';
 import {AccountService} from "./service/account.service";
+import {SharedDataService} from "./service/shared-data.service";
+import {Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 
 @Component({
@@ -10,64 +11,42 @@ import {Title} from "@angular/platform-browser";
 })
 export class AppComponent {
   fileReader: FileReader;
-  domParser: DOMParser
-  homebankFile: Blob;
+  domParser: DOMParser;
   homebankFileLoaded: boolean;
-  homebankFileLoadedInMs: number;
-  homebankXmlDocument: XMLDocument;
-  title: string;
-  accounts: Account[];
 
   constructor(private accountService: AccountService,
-              private titleService: Title) {
+              private titleService: Title,
+              private sharedDataService: SharedDataService,
+              private router: Router) {
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
-    this.homebankFile = new Blob();
     this.homebankFileLoaded = false;
-    this.homebankFileLoadedInMs = 0;
-    this.homebankXmlDocument = this.domParser.parseFromString('<root/>', 'text/xml');
-    this.title = '';
-    this.accounts = [];
   }
 
   homebankFileChanged(event: any) {
-    this.homebankFileLoaded = false;
-    this.accounts = [];
-    this.homebankFile = event.target.files[0];
-    this.loadDocument();
+    this.loadDocument(event.target.files[0]);
   }
 
-  loadDocument() {
-    this.fileReader.readAsText(this.homebankFile);
+  loadDocument(homebankFileBlob: Blob) {
+    this.fileReader.readAsText(homebankFileBlob);
 
     this.fileReader.onload = () => {
       let homebankXmlFileContent = this.fileReader.result as string;
+
       let startTime = new Date().getTime();
-      this.homebankXmlDocument = this.domParser.parseFromString(homebankXmlFileContent, 'text/xml');
-      this.homebankFileLoadedInMs = new Date().getTime() - startTime;
+      let homebankXmlDocument = this.domParser.parseFromString(homebankXmlFileContent, 'text/xml');
+      console.debug('HomeBank file loaded in ' + (new Date().getTime() - startTime) + ' ms')
       this.homebankFileLoaded = true;
+      this.sharedDataService.setHomebankXmlDocument(homebankXmlDocument);
 
-      this.loadTitle();
-      this.loadAccounts();
+      this.loadTitle(homebankXmlDocument);
+
+      this.router.navigate(['/accounts']);
     }
   }
 
-  loadTitle() {
-    this.title = this.homebankXmlDocument.evaluate("/homebank/properties/@title", this.homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
-    this.titleService.setTitle(this.title);
-  }
-
-  loadAccounts() {
-    let accounts = this.homebankXmlDocument.evaluate("/homebank/account", this.homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
-    let xmlAccount = accounts.iterateNext();
-    while (xmlAccount) {
-      let position = this.homebankXmlDocument.evaluate("@pos", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-      this.accounts.push(this.accountService.load(this.homebankXmlDocument, xmlAccount, position));
-      xmlAccount = accounts.iterateNext();
-    }
-  }
-
-  get accountsToDisplay() {
-    return this.accounts.filter(account => this.accountService.isDisplayable(account));
+  loadTitle(homebankXmlDocument: XMLDocument) {
+    let title = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
+    this.titleService.setTitle(title);
   }
 }

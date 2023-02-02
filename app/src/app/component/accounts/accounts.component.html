@@ -1,0 +1,10 @@
+<table>
+  <thead>
+  <th>Name</th>
+  <th>Amount</th>
+  </thead>
+  <tr *ngFor="let account of accountsToDisplay">
+    <td>{{ account.name }}</td>
+    <td>{{ account.amount }}</td>
+  </tr>
+</table>

@@ -1,21 +1,7 @@
-<div>
+<div *ngIf="!homebankFileLoaded">
   <label>Load HomeBank file: </label>
   <input type="file" accept=".xhb" (change)="homebankFileChanged($event)">
   <hr/>
-  <div *ngIf="homebankFileLoaded">
-    <span>{{ title }} loaded in {{ homebankFileLoadedInMs }} ms</span>
-    <br/>
-    <table>
-      <thead>
-      <th>Name</th>
-      <th>Amount</th>
-      </thead>
-      <tr *ngFor="let account of accountsToDisplay">
-        <td>{{ account.name }}</td>
-        <td>{{ account.amount }}</td>
-      </tr>
-    </table>
-  </div>
 </div>
 
 <router-outlet></router-outlet>
