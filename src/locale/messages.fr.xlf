@@ -3,8 +3,8 @@
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <!-- main -->
-      <trans-unit id="main-load-homebank-file" datatype="html">
-        <target>Charger le fichier HomeBank : </target>
+      <trans-unit id="main-click-to-open-a-file" datatype="html">
+        <target>Cliquer pour ouvrir un fichier</target>
       </trans-unit>
       <!-- accounts -->
       <trans-unit id="accounts-name" datatype="html">
