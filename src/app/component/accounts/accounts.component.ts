@@ -9,9 +9,14 @@ import {SharedDataService} from "../../service/shared-data.service";
   styleUrls: ['./accounts.component.sass']
 })
 export class AccountsComponent {
+  homebankFileLoaded: boolean;
   accounts: Account[];
 
   constructor(private accountService: AccountService, private sharedDataService: SharedDataService) {
+    this.homebankFileLoaded = false;
+    this.sharedDataService.homebankFileLoadedObservable.subscribe(homebankFileLoaded => {
+      this.homebankFileLoaded = homebankFileLoaded;
+    });
     this.accounts = [];
     this.sharedDataService.homebankXmlDocumentObservable.subscribe(homebankXmlDocument => {
       this.load(homebankXmlDocument);
