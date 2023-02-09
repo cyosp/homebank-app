@@ -7,8 +7,8 @@
         <target>Cliquer pour ouvrir un fichier</target>
       </trans-unit>
       <!-- accounts -->
-      <trans-unit id="accounts-name" datatype="html">
-        <target>Nom</target>
+      <trans-unit id="accounts-account" datatype="html">
+        <target>Compte</target>
       </trans-unit>
       <trans-unit id="accounts-balance" datatype="html">
         <target>Solde</target>
