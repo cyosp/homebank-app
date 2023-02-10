@@ -1,10 +1,14 @@
-<table *ngIf="homebankFileLoaded">
+<table *ngIf="homebankFileLoaded" class="table table-striped accounts">
   <thead>
-  <th i18n="@@accounts-account">Account</th>
-  <th i18n="@@accounts-balance">Balance</th>
-  </thead>
-  <tr *ngFor="let account of accountsToDisplay">
-    <td>{{ account.name }}</td>
-    <td>{{ account.balance }}</td>
+  <tr>
+    <th class="account" i18n="@@accounts-account">Account</th>
+    <th class="balance" i18n="@@accounts-balance">Balance</th>
   </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let account of accountsToDisplay">
+    <td class="account" >{{ account.name }}</td>
+    <td class="balance">{{ account.balance }}</td>
+  </tr>
+  </tbody>
 </table>
