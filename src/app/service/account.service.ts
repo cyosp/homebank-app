@@ -5,24 +5,19 @@ import {Account} from "../model/account";
 export class AccountService {
   load(homebankXmlDocument: XMLDocument, xmlAccount: Node, position: number): Account {
     let name = homebankXmlDocument.evaluate("@name", xmlAccount, null, XPathResult.STRING_TYPE, null).stringValue;
-    let amount = this.computeAmount(homebankXmlDocument, position);
+    let balance = this.computeAmount(homebankXmlDocument, position);
     let flags = homebankXmlDocument.evaluate("@flags", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    return new Account(name, position, amount, flags);
+    return new Account(name, position, balance, flags);
   }
 
   computeAmount(homebankXmlDocument: XMLDocument, position: number) {
-    return this.round(
-      homebankXmlDocument.evaluate(
-        "sum(/homebank/ope[@account='" + position + "']/@amount)",
-        homebankXmlDocument,
-        null,
-        XPathResult.NUMBER_TYPE,
-        null
-      ).numberValue);
-  }
-
-  round(num: number): number {
-    return Number(num.toFixed(2));
+    return homebankXmlDocument.evaluate(
+      "sum(/homebank/ope[@account='" + position + "']/@amount)",
+      homebankXmlDocument,
+      null,
+      XPathResult.NUMBER_TYPE,
+      null
+    ).numberValue;
   }
 
   isDisplayable(account: Account): boolean {
