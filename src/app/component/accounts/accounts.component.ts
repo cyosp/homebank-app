@@ -28,8 +28,7 @@ export class AccountsComponent {
     let accounts = homebankXmlDocument.evaluate("/homebank/account", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
     let xmlAccount = accounts.iterateNext();
     while (xmlAccount) {
-      let position = homebankXmlDocument.evaluate("@pos", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-      this.accounts.push(this.accountService.load(homebankXmlDocument, xmlAccount, position));
+      this.accounts.push(this.accountService.load(homebankXmlDocument, xmlAccount));
       xmlAccount = accounts.iterateNext();
     }
   }
