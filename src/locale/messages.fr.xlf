@@ -4,7 +4,7 @@
     <body>
       <!-- main -->
       <trans-unit id="main-click-to-open-a-file" datatype="html">
-        <target>Cliquer pour ouvrir un fichier</target>
+        <target>Cliquer pour ouvrir un fichier HomeBank</target>
       </trans-unit>
       <!-- accounts -->
       <trans-unit id="accounts-account" datatype="html">

@@ -1,6 +1,6 @@
 <div id="open-file-div" *ngIf="!homebankFileLoaded">
   <input id="open-file-input" type="file" accept=".xhb" (change)="homebankFileChanged($event)" #file>
-  <button id="open-file-button" (click)="file.click()" i18n="@@main-click-to-open-a-file">Click to open file</button>
+  <button id="open-file-button" (click)="file.click()" i18n="@@main-click-to-open-a-file">Click to open HomeBank file</button>
 </div>
 
 <router-outlet></router-outlet>
