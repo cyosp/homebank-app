@@ -3,6 +3,7 @@ import {AccountService} from "../../service/account.service";
 import {SharedDataService} from "../../service/shared-data.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import {faRightFromBracket, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -10,22 +11,36 @@ import {Title} from "@angular/platform-browser";
   styleUrls: ['./main.component.sass']
 })
 export class MainComponent {
+  isTogglerCollapsed: boolean;
+  location: string;
+  disconnect: IconDefinition;
   fileReader: FileReader;
   domParser: DOMParser;
   homebankFileLoaded: boolean;
-  title: string;
 
   constructor(private accountService: AccountService,
               private titleService: Title,
               private sharedDataService: SharedDataService,
               private router: Router) {
+    this.isTogglerCollapsed = true;
+    this.location = "";
+    this.disconnect = faRightFromBracket;
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
     this.homebankFileLoaded = false;
-    this.title = "";
 
     this.sharedDataService.homebankFileLoadedObservable.subscribe(homebankFileLoaded => {
       this.homebankFileLoaded = homebankFileLoaded;
+    });
+
+    this.sharedDataService.homebankXmlDocumentObservable.subscribe(homebankXmlDocument => {
+      let homebankTitle = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
+      this.titleService.setTitle(homebankTitle);
+      this.sharedDataService.setHomebankLocation(homebankTitle);
+    });
+
+    this.sharedDataService.homebankLocationObservable.subscribe(homebankLocation => {
+      this.location = homebankLocation;
     });
 
     this.router.events.subscribe((event: any) => {
@@ -47,18 +62,12 @@ export class MainComponent {
 
       let startTime = new Date().getTime();
       let homebankXmlDocument = this.domParser.parseFromString(homebankXmlFileContent, 'text/xml');
-      console.debug('HomeBank file loaded in ' + (new Date().getTime() - startTime) + ' ms')
+      console.debug('HomeBank file loaded in ' + (new Date().getTime() - startTime) + ' ms');
+
       this.sharedDataService.setHomebankFileLoaded(true);
       this.sharedDataService.setHomebankXmlDocument(homebankXmlDocument);
 
-      this.loadTitle(homebankXmlDocument);
-
       this.router.navigate(['/accounts']);
     }
-  }
-
-  loadTitle(homebankXmlDocument: XMLDocument) {
-    this.title = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
-    this.titleService.setTitle(this.title);
   }
 }

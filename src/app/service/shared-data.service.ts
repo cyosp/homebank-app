@@ -5,9 +5,11 @@ import {BehaviorSubject} from 'rxjs';
 export class SharedDataService {
   private homebankFileLoaded = new BehaviorSubject(false);
   private homebankXmlDocument = new BehaviorSubject(new Document());
+  private homebankLocation = new BehaviorSubject("");
 
   homebankFileLoadedObservable = this.homebankFileLoaded.asObservable();
   homebankXmlDocumentObservable = this.homebankXmlDocument.asObservable();
+  homebankLocationObservable = this.homebankLocation.asObservable();
 
   constructor() {
   }
@@ -18,5 +20,9 @@ export class SharedDataService {
 
   setHomebankXmlDocument(homebankXmlDocument: XMLDocument): void {
     this.homebankXmlDocument.next(homebankXmlDocument);
+  }
+
+  setHomebankLocation(homebankLocation: string): void {
+    this.homebankLocation.next(homebankLocation);
   }
 }

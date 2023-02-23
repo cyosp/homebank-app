@@ -6,6 +6,8 @@ import { MainComponent } from './component/main/main.component';
 import {AccountService} from "./service/account.service";
 import {AccountsComponent} from "./component/accounts/accounts.component";
 import {SharedDataService} from "./service/shared-data.service";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import {SharedDataService} from "./service/shared-data.service";
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
+    FontAwesomeModule
   ],
   providers: [
     AccountService,
