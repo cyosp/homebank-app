@@ -24,7 +24,7 @@ export class AccountService {
 
   private computeAmount(homebankXmlDocument: XMLDocument, key: number) {
     return homebankXmlDocument.evaluate(
-      "sum(/homebank/ope[@account='" + key + "']/@amount)",
+      "sum(/homebank/account[@key='" + key + "']/@initial | /homebank/ope[@account='" + key + "']/@amount)",
       homebankXmlDocument,
       null,
       XPathResult.NUMBER_TYPE,
