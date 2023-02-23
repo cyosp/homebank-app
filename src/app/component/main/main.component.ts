@@ -13,6 +13,7 @@ export class MainComponent {
   fileReader: FileReader;
   domParser: DOMParser;
   homebankFileLoaded: boolean;
+  title: string;
 
   constructor(private accountService: AccountService,
               private titleService: Title,
@@ -21,6 +22,7 @@ export class MainComponent {
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
     this.homebankFileLoaded = false;
+    this.title = "";
 
     this.sharedDataService.homebankFileLoadedObservable.subscribe(homebankFileLoaded => {
       this.homebankFileLoaded = homebankFileLoaded;
@@ -56,7 +58,7 @@ export class MainComponent {
   }
 
   loadTitle(homebankXmlDocument: XMLDocument) {
-    let title = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
-    this.titleService.setTitle(title);
+    this.title = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
+    this.titleService.setTitle(this.title);
   }
 }
