@@ -19,18 +19,8 @@ export class AccountsComponent {
     });
     this.accounts = [];
     this.sharedDataService.homebankXmlDocumentObservable.subscribe(homebankXmlDocument => {
-      this.load(homebankXmlDocument);
+      this.accounts = accountService.load(homebankXmlDocument);
     });
-  }
-
-  load(homebankXmlDocument: XMLDocument) {
-    this.accounts = [];
-    let accounts = homebankXmlDocument.evaluate("/homebank/account", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
-    let xmlAccount = accounts.iterateNext();
-    while (xmlAccount) {
-      this.accounts.push(this.accountService.load(homebankXmlDocument, xmlAccount));
-      xmlAccount = accounts.iterateNext();
-    }
   }
 
   get accountsToDisplay() {
