@@ -58,3 +58,9 @@ CREATE app/src/app/app.component.ts (213 bytes)
 
 #### With French translation
 `npm run start -- --configuration=fr`
+
+#### With external access
+`npm run start -- --host=0.0.0.0`
+
+#### With both
+`npm run start -- --configuration=fr --host=0.0.0.0`
