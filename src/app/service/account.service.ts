@@ -19,7 +19,8 @@ export class AccountService {
     let name = homebankXmlDocument.evaluate("@name", xmlAccount, null, XPathResult.STRING_TYPE, null).stringValue;
     let balance = this.computeAmount(homebankXmlDocument, key);
     let flags = homebankXmlDocument.evaluate("@flags", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    return new Account(key, name, balance, flags);
+    let currencyIso = homebankXmlDocument.evaluate("/homebank/cur[@key=../account[@key='" + key + "']/@curr]/@iso", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
+    return new Account(key, name, balance, flags, currencyIso);
   }
 
   private computeAmount(homebankXmlDocument: XMLDocument, key: number) {

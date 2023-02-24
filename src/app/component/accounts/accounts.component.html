@@ -8,7 +8,7 @@
   <tbody>
   <tr *ngFor="let account of accountsToDisplay">
     <td class="account" >{{ account.name }}</td>
-    <td class="balance">{{ account.balance.toFixed(2) }}</td>
+    <td class="balance">{{ account.balance | currency:account.currencyIso }}</td>
   </tr>
   </tbody>
 </table>
