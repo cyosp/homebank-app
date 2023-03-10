@@ -14,11 +14,11 @@ export class AccountsComponent {
 
   constructor(private accountService: AccountService, private sharedDataService: SharedDataService) {
     this.homebankFileLoaded = false;
-    this.sharedDataService.homebankFileLoadedObservable.subscribe(homebankFileLoaded => {
+    this.sharedDataService.getHomebankFileLoaded().subscribe(homebankFileLoaded => {
       this.homebankFileLoaded = homebankFileLoaded;
     });
     this.accounts = [];
-    this.sharedDataService.homebankXmlDocumentObservable.subscribe(homebankXmlDocument => {
+    this.sharedDataService.getHomebankXmlDocument().subscribe(homebankXmlDocument => {
       this.accounts = accountService.load(homebankXmlDocument);
     });
   }

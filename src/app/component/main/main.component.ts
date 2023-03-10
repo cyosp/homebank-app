@@ -29,17 +29,17 @@ export class MainComponent {
     this.domParser = new DOMParser();
     this.homebankFileLoaded = false;
 
-    this.sharedDataService.homebankFileLoadedObservable.subscribe(homebankFileLoaded => {
+    this.sharedDataService.getHomebankFileLoaded().subscribe(homebankFileLoaded => {
       this.homebankFileLoaded = homebankFileLoaded;
     });
 
-    this.sharedDataService.homebankXmlDocumentObservable.subscribe(homebankXmlDocument => {
+    this.sharedDataService.getHomebankXmlDocument().subscribe(homebankXmlDocument => {
       let homebankTitle = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
       this.titleService.setTitle(homebankTitle);
       this.sharedDataService.setHomebankLocation(homebankTitle);
     });
 
-    this.sharedDataService.homebankLocationObservable.subscribe(homebankLocation => {
+    this.sharedDataService.getHomebankLocation().subscribe(homebankLocation => {
       this.location = homebankLocation;
     });
 
