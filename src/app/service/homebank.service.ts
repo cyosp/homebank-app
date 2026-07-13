@@ -3,14 +3,18 @@ import {Account} from "../model/account";
 import {CurrencyService} from "./currency.service";
 import {Homebank} from "../model/homebank";
 import {Currency} from "../model/currency";
+import {PayeeService} from "./payee.service";
 
 @Injectable()
 export class HomebankService {
 
-  constructor(private currencyService: CurrencyService) {}
+  constructor(private currencyService: CurrencyService,
+              private payeeService: PayeeService,
+              ) {}
 
   public load(homebankXmlDocument: XMLDocument) {
     let currencies = this.currencyService.load(homebankXmlDocument);
+    let payees = this.payeeService.load(homebankXmlDocument);
 
     let accounts = [];
     let xmlAccounts = homebankXmlDocument.evaluate("/homebank/account", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
@@ -19,7 +23,7 @@ export class HomebankService {
       accounts.push(this.loadAccount(homebankXmlDocument, xmlAccount, currencies));
       xmlAccount = xmlAccounts.iterateNext();
     }
-    return new Homebank(currencies, accounts);
+    return new Homebank(currencies, payees, accounts);
   }
 
   private ensure<T>(argument: T | undefined | null, message: string = 'This value was promised to be there'): T {

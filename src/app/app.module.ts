@@ -9,6 +9,7 @@ import {SharedDataService} from "./service/shared-data.service";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {CurrencyService} from "./service/currency.service";
+import {PayeeService} from "./service/payee.service";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {CurrencyService} from "./service/currency.service";
   providers: [
     HomebankService,
     CurrencyService,
+    PayeeService,
     SharedDataService
   ],
   bootstrap: [MainComponent]
