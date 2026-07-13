@@ -14,9 +14,9 @@ export class PayeeService {
     return payees;
   }
 
-  private loadPayee(homebankXmlDocument: XMLDocument, xmlCurrency: Node): Payee {
-    let key = homebankXmlDocument.evaluate("@key", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let name = homebankXmlDocument.evaluate("@name", xmlCurrency, null, XPathResult.STRING_TYPE, null).stringValue;
+  private loadPayee(homebankXmlDocument: XMLDocument, xmlPayee: Node): Payee {
+    let key = homebankXmlDocument.evaluate("@key", xmlPayee, null, XPathResult.NUMBER_TYPE, null).numberValue;
+    let name = homebankXmlDocument.evaluate("@name", xmlPayee, null, XPathResult.STRING_TYPE, null).stringValue;
     return new Payee(key, name);
   }
 }
