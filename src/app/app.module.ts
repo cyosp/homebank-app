@@ -11,6 +11,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {CurrencyService} from "./service/currency.service";
 import {PayeeService} from "./service/payee.service";
 import {CategoryService} from "./service/category.service";
+import {OperationService} from "./service/operation.service";
+import {AccountService} from "./service/account.service";
 
 @NgModule({
   declarations: [
@@ -26,8 +28,10 @@ import {CategoryService} from "./service/category.service";
   providers: [
     HomebankService,
     CurrencyService,
+    AccountService,
     PayeeService,
     CategoryService,
+    OperationService,
     SharedDataService
   ],
   bootstrap: [MainComponent]
