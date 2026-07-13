@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AccountService} from "../../service/account.service";
+import {HomebankService} from "../../service/homebank.service";
 import {SharedDataService} from "../../service/shared-data.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
@@ -18,7 +18,7 @@ export class MainComponent {
   domParser: DOMParser;
   homebankFileLoaded: boolean;
 
-  constructor(private accountService: AccountService,
+  constructor(private homebankService: HomebankService,
               private titleService: Title,
               private sharedDataService: SharedDataService,
               private router: Router) {

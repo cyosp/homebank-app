@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Account} from '../../model/account';
-import {AccountService} from "../../service/account.service";
+import {HomebankService} from "../../service/homebank.service";
 import {SharedDataService} from "../../service/shared-data.service";
 
 @Component({
@@ -12,18 +12,18 @@ export class AccountsComponent {
   homebankFileLoaded: boolean;
   accounts: Account[];
 
-  constructor(private accountService: AccountService, private sharedDataService: SharedDataService) {
+  constructor(private homebankService: HomebankService, private sharedDataService: SharedDataService) {
     this.homebankFileLoaded = false;
     this.sharedDataService.getHomebankFileLoaded().subscribe(homebankFileLoaded => {
       this.homebankFileLoaded = homebankFileLoaded;
     });
     this.accounts = [];
     this.sharedDataService.getHomebankXmlDocument().subscribe(homebankXmlDocument => {
-      this.accounts = accountService.load(homebankXmlDocument);
+      this.accounts = homebankService.load(homebankXmlDocument).accounts;
     });
   }
 
   get accountsToDisplay() {
-    return this.accounts.filter(account => this.accountService.isDisplayable(account));
+    return this.accounts.filter(account => this.homebankService.isDisplayable(account));
   }
 }

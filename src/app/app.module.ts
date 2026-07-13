@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './component/main/main.component';
-import {AccountService} from "./service/account.service";
+import {HomebankService} from "./service/homebank.service";
 import {AccountsComponent} from "./component/accounts/accounts.component";
 import {SharedDataService} from "./service/shared-data.service";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {CurrencyService} from "./service/currency.service";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule
   ],
   providers: [
-    AccountService,
+    HomebankService,
+    CurrencyService,
     SharedDataService
   ],
   bootstrap: [MainComponent]
