@@ -1,15 +1,35 @@
+import {Operation} from "./operation";
+
 export class Account {
   key: number;
-  name: string;
-  balance: number;
-  flags: number;
+  pos: number;
   currencyIso: string;
+  name: string;
+  initial: number;
+  balance: number;
+  minimum: number;
+  maximum: number;
+  flags: number;
 
-  constructor(key: number, name: string, balance: number, flags: number, currencyIso: string) {
-    this.name = name;
+  operations: Operation[] = [];
+
+  constructor(key: number,
+              pos: number,
+              currencyIso: string,
+              name: string,
+              initial: number,
+              minimum: number,
+              maximum: number,
+              flags: number
+              ) {
     this.key = key;
-    this.balance = balance;
-    this.flags = flags;
+    this.pos = pos;
     this.currencyIso = currencyIso;
+    this.name = name;
+    this.initial = initial;
+    this.balance = this.initial;
+    this.minimum = minimum;
+    this.maximum = maximum;
+    this.flags = flags;
   }
 }

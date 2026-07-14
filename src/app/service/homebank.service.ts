@@ -25,6 +25,8 @@ export class HomebankService {
     let categories = this.categoryService.load(homebankXmlDocument);
     let operations = this.operationService.load(homebankXmlDocument, accounts, payees, categories);
 
+    this.accountService.link(accounts, operations)
+
     return new Homebank(currencies, accounts, payees, categories, operations);
   }
 
