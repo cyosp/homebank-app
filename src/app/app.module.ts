@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './component/main/main.component';
 import {HomebankService} from "./service/homebank.service";
 import {AccountsComponent} from "./component/accounts/accounts.component";
@@ -13,6 +12,7 @@ import {PayeeService} from "./service/payee.service";
 import {CategoryService} from "./service/category.service";
 import {OperationService} from "./service/operation.service";
 import {AccountService} from "./service/account.service";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -21,9 +21,13 @@ import {AccountService} from "./service/account.service";
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     NgbModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterModule.forRoot([
+      {
+        path: 'accounts', component: AccountsComponent,
+      }
+    ])
   ],
   providers: [
     HomebankService,
