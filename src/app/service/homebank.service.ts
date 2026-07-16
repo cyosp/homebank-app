@@ -7,11 +7,13 @@ import {CategoryService} from "./category.service";
 import {OperationService} from "./operation.service";
 import {AccountService} from "./account.service";
 import {Operation} from "../model/operation";
+import {PropertiesService} from "./properties.service";
 
 @Injectable()
 export class HomebankService {
 
   constructor(private currencyService: CurrencyService,
+              private propertiesService: PropertiesService,
               private accountService: AccountService,
               private payeeService: PayeeService,
               private categoryService: CategoryService,
@@ -21,6 +23,7 @@ export class HomebankService {
 
   public load(homebankXmlDocument: XMLDocument) {
     let currencies = this.currencyService.load(homebankXmlDocument);
+    let property = this.propertiesService.load(homebankXmlDocument, currencies);
     let accounts = this.accountService.load(homebankXmlDocument, currencies);
     let payees = this.payeeService.load(homebankXmlDocument);
     let categories = this.categoryService.load(homebankXmlDocument);
@@ -28,7 +31,7 @@ export class HomebankService {
 
     this.link(accounts, operations)
 
-    return new Homebank(currencies, accounts, payees, categories, operations);
+    return new Homebank(currencies, property, accounts, payees, categories, operations);
   }
 
   public isDisplayable(account: Account): boolean {

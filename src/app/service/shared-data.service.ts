@@ -1,13 +1,20 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Homebank} from "../model/homebank";
+import {Property} from "../model/property";
 
 @Injectable()
 export class SharedDataService {
   private homebankFileLoaded = new BehaviorSubject(false);
   private homebankXmlDocument = new BehaviorSubject(new Document());
-  private homebankLocation = new BehaviorSubject("");
-  private homebank = new BehaviorSubject(new Homebank([],[],[],[],[]));
+  private homebankTitle = new BehaviorSubject("");
+  private homebank = new BehaviorSubject(new Homebank(
+    [],
+    new Property('','',-1,-1,-1),
+    [],
+    [],
+    [],
+    []));
 
   constructor() {
   }
@@ -28,12 +35,12 @@ export class SharedDataService {
     this.homebankXmlDocument.next(homebankXmlDocument);
   }
 
-  public getHomebankLocation(): Observable<string> {
-    return this.homebankLocation;
+  public getTitle(): Observable<string> {
+    return this.homebankTitle;
   }
 
-  setHomebankLocation(homebankLocation: string): void {
-    this.homebankLocation.next(homebankLocation);
+  setTitle(homebankLocation: string): void {
+    this.homebankTitle.next(homebankLocation);
   }
 
   public getHomebank(): Observable<Homebank> {

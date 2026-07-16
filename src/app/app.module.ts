@@ -14,6 +14,7 @@ import {OperationService} from "./service/operation.service";
 import {AccountService} from "./service/account.service";
 import {RouterModule} from "@angular/router";
 import {OperationsComponent} from "./component/operations/operations.component";
+import {PropertiesService} from "./service/properties.service";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {OperationsComponent} from "./component/operations/operations.component";
   providers: [
     HomebankService,
     CurrencyService,
+    PropertiesService,
     AccountService,
     PayeeService,
     CategoryService,

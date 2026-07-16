@@ -12,7 +12,7 @@ import {faRightFromBracket, IconDefinition} from '@fortawesome/free-solid-svg-ic
 })
 export class MainComponent {
   isTogglerCollapsed: boolean;
-  location: string;
+  homebankTitle: string;
   disconnect: IconDefinition;
   fileReader: FileReader;
   domParser: DOMParser;
@@ -23,7 +23,7 @@ export class MainComponent {
               private sharedDataService: SharedDataService,
               private router: Router) {
     this.isTogglerCollapsed = true;
-    this.location = "";
+    this.homebankTitle = "";
     this.disconnect = faRightFromBracket;
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
@@ -36,11 +36,11 @@ export class MainComponent {
     this.sharedDataService.getHomebankXmlDocument().subscribe(homebankXmlDocument => {
       let homebankTitle = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
       this.titleService.setTitle(homebankTitle);
-      this.sharedDataService.setHomebankLocation(homebankTitle);
+      this.sharedDataService.setTitle(homebankTitle);
     });
 
-    this.sharedDataService.getHomebankLocation().subscribe(homebankLocation => {
-      this.location = homebankLocation;
+    this.sharedDataService.getTitle().subscribe(homebankTitle => {
+      this.homebankTitle = homebankTitle;
     });
 
     this.router.events.subscribe((event: any) => {
