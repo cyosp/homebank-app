@@ -1,22 +1,24 @@
-<table *ngIf="operations" class="table table-striped accounts">
-  <thead>
-  <tr class="heads">
-    <th class="head-account" i18n="@@operations-account">Date</th>
-    <th class="head-payee" i18n="@@operations-payee">Tiers</th>
-    <th class="head-category" i18n="@@operations-category">Catégorie</th>
-    <th class="head-wording" i18n="@@operations-wording">Note</th>
-    <th class="head-amount" i18n="@@operations-amount">Montant</th>
-    <th class="head-balance" i18n="@@operations-balance">Solde</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr class="line" *ngFor="let operation of operations">
-    <td class="cell-date">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</td>
-    <td class="cell-payee">{{ operation.payee?.name }}</td>
-    <td class="cell-category">{{ operation.category?.name }}</td>
-    <td class="cell-wording">{{ operation.wording }}</td>
-    <td class="cell-amount">{{ operation.amount | currency:operation.account.currencyIso }}</td>
-    <td class="cell-balance">{{ operation.balance | currency:operation.account.currencyIso }}</td>
-  </tr>
-  </tbody>
-</table>
+<div class="table-responsive-md">
+  <table *ngIf="operations" class="table table-striped accounts">
+    <thead>
+    <tr class="heads">
+      <th class="head-account" i18n="@@operations-account">Date</th>
+      <th class="head-payee" i18n="@@operations-payee">Tiers</th>
+      <th class="head-category" i18n="@@operations-category">Catégorie</th>
+      <th class="head-amount" i18n="@@operations-amount">Montant</th>
+      <th class="head-balance" i18n="@@operations-balance">Solde</th>
+      <th class="head-wording" i18n="@@operations-wording">Note</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="line" *ngFor="let operation of operations">
+      <td class="cell-date">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</td>
+      <td class="cell-payee">{{ operation.payee?.name }}</td>
+      <td class="cell-category">{{ operation.category?.name }}</td>
+      <td class="cell-amount">{{ operation.amount | currency:operation.account.currencyIso }}</td>
+      <td class="cell-balance">{{ operation.balance | currency:operation.account.currencyIso }}</td>
+      <td class="cell-wording">{{ operation.wording }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
