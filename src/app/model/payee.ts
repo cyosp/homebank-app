@@ -3,7 +3,7 @@ export class Payee {
   name: string;
 
   constructor(key: number, name: string) {
-    this.name = name;
     this.key = key;
+    this.name = name;
   }
 }

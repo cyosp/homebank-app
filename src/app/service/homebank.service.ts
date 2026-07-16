@@ -6,6 +6,7 @@ import {PayeeService} from "./payee.service";
 import {CategoryService} from "./category.service";
 import {OperationService} from "./operation.service";
 import {AccountService} from "./account.service";
+import {Operation} from "../model/operation";
 
 @Injectable()
 export class HomebankService {
@@ -25,7 +26,7 @@ export class HomebankService {
     let categories = this.categoryService.load(homebankXmlDocument);
     let operations = this.operationService.load(homebankXmlDocument, accounts, payees, categories);
 
-    this.accountService.link(accounts, operations)
+    this.link(accounts, operations)
 
     return new Homebank(currencies, accounts, payees, categories, operations);
   }
@@ -33,5 +34,20 @@ export class HomebankService {
   public isDisplayable(account: Account): boolean {
     const hideAccountFromSummaryFlag = 16;
     return (account.flags & hideAccountFromSummaryFlag) != hideAccountFromSummaryFlag;
+  }
+
+  public link(accounts: Account[], operations: Operation[]): void {
+    accounts.forEach(account => {
+      let balance = account.initial;
+      operations.filter(operation => {
+        return operation.account === account;
+      }).sort((a1, a2) => a1.date - a2.date)
+        .map(operation => {
+          balance += operation.amount;
+          operation.balance = balance;
+          account.operations.push(operation);
+        });
+        account.balance = balance;
+    })
   }
 }

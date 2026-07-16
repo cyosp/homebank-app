@@ -1,4 +1,4 @@
-<table *ngIf="homebankFileLoaded" class="table table-striped accounts">
+<table *ngIf="homebank" class="table table-striped accounts">
   <thead>
   <tr>
     <th class="account" i18n="@@accounts-account">Account</th>
@@ -7,7 +7,11 @@
   </thead>
   <tbody>
   <tr *ngFor="let account of accountsToDisplay">
-    <td class="account" >{{ account.name }}</td>
+    <td class="account">
+      <a routerLink="{{account.key}}/operations">
+        {{ account.name }}
+      </a>
+    </td>
     <td class="balance">{{ account.balance | currency:account.currencyIso }}</td>
   </tr>
   </tbody>

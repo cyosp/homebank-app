@@ -30,14 +30,15 @@ export class OperationService {
 
     let categoryValue = homebankXmlDocument.evaluate("@category", xmlOperation, null, XPathResult.NUMBER_TYPE, null).numberValue;
     let category = categories.find(category => category.key === categoryValue);
-
     let flags = homebankXmlDocument.evaluate("@flags", xmlOperation, null, XPathResult.NUMBER_TYPE, null).numberValue;
+
+    let wording = homebankXmlDocument.evaluate("@wording", xmlOperation, null, XPathResult.STRING_TYPE, null).stringValue;
 
     let dstAccountValue = homebankXmlDocument.evaluate("@dst_account", xmlOperation, null, XPathResult.NUMBER_TYPE, null).numberValue;
     let destinationAccount = accounts.find(account => account.key === dstAccountValue);
 
     let kxfer = homebankXmlDocument.evaluate("@kxfer", xmlOperation, null, XPathResult.NUMBER_TYPE, null).numberValue;
 
-    return new Operation(date, amount, account, payee, category, flags, destinationAccount, kxfer);
+    return new Operation(date, amount, account, payee, category, wording, flags, destinationAccount, kxfer);
   }
 }

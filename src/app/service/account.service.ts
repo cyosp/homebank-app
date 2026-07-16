@@ -36,15 +36,4 @@ export class AccountService {
       flags
     );
   }
-
-  public link(accounts: Account[], operations: Operation[]): void {
-    accounts.forEach(account => {
-      operations.filter(operation => {
-        return operation.account === account;
-      }).map(operation => {
-        account.operations.push(operation);
-        account.balance += operation.amount;
-      });
-    })
-  }
 }

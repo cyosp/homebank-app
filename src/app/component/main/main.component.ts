@@ -66,6 +66,7 @@ export class MainComponent {
 
       this.sharedDataService.setHomebankFileLoaded(true);
       this.sharedDataService.setHomebankXmlDocument(homebankXmlDocument);
+      this.sharedDataService.setHomebank(this.homebankService.load(homebankXmlDocument));
 
       this.router.navigate(['/accounts']);
     }
