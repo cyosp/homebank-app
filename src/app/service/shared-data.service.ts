@@ -32,8 +32,8 @@ export class SharedDataService {
     return this.homebankTitle;
   }
 
-  setTitle(homebankLocation: string): void {
-    this.homebankTitle.next(homebankLocation);
+  setTitle(title: string): void {
+    this.homebankTitle.next(title);
   }
 
   public getHomebank(): Observable<Homebank> {

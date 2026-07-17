@@ -7,7 +7,7 @@ import {Property} from "../model/property";
 export class PropertiesService {
   public load(homebankXmlDocument: XMLDocument, currencies: Currency[]) {
     let properties = [];
-    let xmlProperties = homebankXmlDocument.evaluate("/homebank/account", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlProperties = homebankXmlDocument.evaluate("/homebank/properties", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
     let xmlProperty = xmlProperties.iterateNext();
     while (xmlProperty) {
       properties.push(this.loadProperty(homebankXmlDocument, xmlProperty, currencies));

@@ -33,14 +33,9 @@ export class MainComponent {
       this.homebankFileLoaded = homebankFileLoaded;
     });
 
-    this.sharedDataService.getHomebankXmlDocument().subscribe(homebankXmlDocument => {
-      let homebankTitle = homebankXmlDocument.evaluate("/homebank/properties/@title", homebankXmlDocument, null, XPathResult.STRING_TYPE, null).stringValue;
-      this.titleService.setTitle(homebankTitle);
-      this.sharedDataService.setTitle(homebankTitle);
-    });
-
-    this.sharedDataService.getTitle().subscribe(homebankTitle => {
-      this.homebankTitle = homebankTitle;
+    this.sharedDataService.getTitle().subscribe(title => {
+      this.homebankTitle = title;
+      this.titleService.setTitle(this.homebankTitle);
     });
 
     this.router.events.subscribe((event: any) => {
@@ -64,9 +59,11 @@ export class MainComponent {
       let homebankXmlDocument = this.domParser.parseFromString(homebankXmlFileContent, 'text/xml');
       console.debug('HomeBank file loaded in ' + (new Date().getTime() - startTime) + ' ms');
 
-      this.sharedDataService.setHomebankFileLoaded(true);
       this.sharedDataService.setHomebankXmlDocument(homebankXmlDocument);
-      this.sharedDataService.setHomebank(this.homebankService.load(homebankXmlDocument));
+      let homebank = this.homebankService.load(homebankXmlDocument);
+      this.sharedDataService.setTitle(homebank.property.title);
+      this.sharedDataService.setHomebank(homebank);
+      this.sharedDataService.setHomebankFileLoaded(true);
 
       this.router.navigate(['/accounts']);
     }
