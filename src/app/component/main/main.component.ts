@@ -13,7 +13,7 @@ import {faRightFromBracket, IconDefinition} from '@fortawesome/free-solid-svg-ic
 export class MainComponent {
   isTogglerCollapsed: boolean;
   homebankTitle: string;
-  disconnect: IconDefinition;
+  disconnectIcon: IconDefinition;
   fileReader: FileReader;
   domParser: DOMParser;
   homebankFileLoaded: boolean;
@@ -24,7 +24,7 @@ export class MainComponent {
               private router: Router) {
     this.isTogglerCollapsed = true;
     this.homebankTitle = "";
-    this.disconnect = faRightFromBracket;
+    this.disconnectIcon = faRightFromBracket;
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
     this.homebankFileLoaded = false;
@@ -70,5 +70,10 @@ export class MainComponent {
 
       this.router.navigate(['/accounts']);
     }
+  }
+
+  disconnect() {
+    this.sharedDataService.resetHomebank();
+    this.router.navigate(['/']);
   }
 }

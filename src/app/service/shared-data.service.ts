@@ -1,20 +1,13 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {Homebank} from "../model/homebank";
-import {Property} from "../model/property";
 
 @Injectable()
 export class SharedDataService {
   private homebankFileLoaded = new BehaviorSubject(false);
   private homebankXmlDocument = new BehaviorSubject(new Document());
   private homebankTitle = new BehaviorSubject("");
-  private homebank = new BehaviorSubject(new Homebank(
-    [],
-    new Property('','',-1,-1,-1),
-    [],
-    [],
-    [],
-    []));
+  private homebank = new ReplaySubject<Homebank>;
 
   constructor() {
   }
@@ -49,5 +42,9 @@ export class SharedDataService {
 
   setHomebank(homebank: Homebank): void {
     this.homebank.next(homebank);
+  }
+
+  resetHomebank(): void {
+    this.homebank = new ReplaySubject<Homebank>;
   }
 }

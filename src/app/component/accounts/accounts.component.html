@@ -1,4 +1,4 @@
-<table *ngIf="homebank" class="table table-striped accounts">
+<table *ngIf="accounts" class="table table-striped accounts">
   <thead>
   <tr>
     <th class="account" i18n="@@accounts-account">Account</th>
@@ -6,7 +6,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let account of accountsToDisplay">
+  <tr *ngFor="let account of displayableAccounts">
     <td class="account">
       <a routerLink="{{account.key}}/operations">
         {{ account.name }}

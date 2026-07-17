@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HomebankService} from "../../service/homebank.service";
 import {SharedDataService} from "../../service/shared-data.service";
-import {Homebank} from "../../model/homebank";
+import {Account} from "../../model/account";
 
 @Component({
   selector: 'app-accounts',
@@ -9,24 +8,28 @@ import {Homebank} from "../../model/homebank";
   styleUrls: ['./accounts.component.sass']
 })
 export class AccountsComponent implements OnInit, OnDestroy {
-  homebank: Homebank | null;
+  accounts: Account[] | null;
 
-  constructor(private homebankService: HomebankService,
-              private sharedDataService: SharedDataService) {
-    this.homebank = null;
+  constructor(private sharedDataService: SharedDataService) {
+    this.accounts = null;
   }
 
   ngOnInit(): void {
     this.sharedDataService.getHomebank().subscribe(homebank => {
-      this.homebank = homebank;
+      this.accounts = homebank.accounts;
     });
   }
 
-  get accountsToDisplay() {
-    return this.homebank?.accounts.filter(account => this.homebankService.isDisplayable(account));
+  isDisplayable(account: Account): boolean {
+    const hideAccountFromSummaryFlag = 16;
+    return (account.flags & hideAccountFromSummaryFlag) != hideAccountFromSummaryFlag;
+  }
+
+  get displayableAccounts() {
+    return this.accounts?.filter(account => this.isDisplayable(account));
   }
 
   ngOnDestroy(): void {
-    this.homebank = null;
+    this.accounts = null;
   }
 }

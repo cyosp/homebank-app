@@ -34,11 +34,6 @@ export class HomebankService {
     return new Homebank(currencies, property, accounts, payees, categories, operations);
   }
 
-  public isDisplayable(account: Account): boolean {
-    const hideAccountFromSummaryFlag = 16;
-    return (account.flags & hideAccountFromSummaryFlag) != hideAccountFromSummaryFlag;
-  }
-
   public link(accounts: Account[], operations: Operation[]): void {
     accounts.forEach(account => {
       let balance = account.initial;

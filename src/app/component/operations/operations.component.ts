@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SharedDataService} from "../../service/shared-data.service";
 import {ActivatedRoute} from "@angular/router";
 import {Operation} from "../../model/operation";
@@ -10,7 +10,7 @@ import {ensure} from "../../utils";
   templateUrl: './operations.component.html',
   styleUrls: ['./operations.component.sass']
 })
-export class OperationsComponent implements OnInit {
+export class OperationsComponent implements OnInit, OnDestroy {
   private DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970 = 719163;
   private DAY_TO_MILLISECONDS = 24 * 60 * 60 * 1000;
 
@@ -34,9 +34,8 @@ export class OperationsComponent implements OnInit {
   }
 
   private setOperations(accountId: number) {
-    const accounts = this.homebank?.accounts;
-    if (accounts && accounts.length > 0) { // Because homebank from shared data is always non null and initialized with empty arrays
-      let account = ensure(accounts.find(account => {
+    if (this.homebank) {
+      let account = ensure(this.homebank.accounts.find(account => {
         return account.key === accountId;
       }));
       this.operations = account.operations
@@ -47,5 +46,9 @@ export class OperationsComponent implements OnInit {
 
   dateToGregorian(date: number): Date {
     return new Date((date - this.DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970) * this.DAY_TO_MILLISECONDS);
+  }
+
+  ngOnDestroy(): void {
+    this.operations = null;
   }
 }
