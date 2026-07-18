@@ -10,6 +10,7 @@ import {Operation} from "../model/operation";
 import {PropertiesService} from "./properties.service";
 import {SharedDataService} from "./shared-data.service";
 import {numberToXmlAttr, stringToXmlAttr} from "../utils";
+import {FavoriteService} from "./favorites.service";
 
 @Injectable()
 export class HomebankService {
@@ -21,6 +22,7 @@ export class HomebankService {
               private accountService: AccountService,
               private payeeService: PayeeService,
               private categoryService: CategoryService,
+              private favoritesService: FavoriteService,
               private operationService: OperationService,
               private sharedDataService: SharedDataService) {
     this.homebank = null;
@@ -35,9 +37,10 @@ export class HomebankService {
     let accounts = this.accountService.load(homebankXmlDocument, currencies);
     let payees = this.payeeService.load(homebankXmlDocument);
     let categories = this.categoryService.load(homebankXmlDocument);
+    let favorites = this.favoritesService.load(homebankXmlDocument, accounts, payees, categories);
     let operations = this.operationService.load(homebankXmlDocument, accounts, payees, categories);
 
-    this.link(accounts, operations)
+    this.setBalances(accounts, operations)
 
     const v = homebankXmlDocument.evaluate("/homebank/@v", homebankXmlDocument, null, XPathResult.NUMBER_TYPE, null).numberValue;
     if (v > this.SUPPORTED_HOMEBANK_VERSION) {
@@ -52,10 +55,11 @@ export class HomebankService {
       accounts,
       payees,
       categories,
+      favorites,
       operations);
   }
 
-  public link(accounts: Account[], operations: Operation[]): void {
+  public setBalances(accounts: Account[], operations: Operation[]): void {
     accounts.forEach(account => {
       let balance = account.initial;
       operations.filter(operation => {
@@ -80,6 +84,7 @@ export class HomebankService {
         + this.accountService.toXml(homebank.accounts) + "\n"
         + this.payeeService.toXml(homebank.payees) + "\n"
         + this.categoryService.toXml(homebank.categories) + "\n"
+        + this.favoritesService.toXml(homebank.favorites) + "\n"
         + this.operationService.toXml(homebank.operations) + "\n"
         + "</homebank>";
     } else {

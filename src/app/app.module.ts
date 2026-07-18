@@ -15,6 +15,7 @@ import {AccountService} from "./service/account.service";
 import {RouterModule} from "@angular/router";
 import {OperationsComponent} from "./component/operations/operations.component";
 import {PropertiesService} from "./service/properties.service";
+import {FavoriteService} from "./service/favorites.service";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {PropertiesService} from "./service/properties.service";
     AccountService,
     PayeeService,
     CategoryService,
+    FavoriteService,
     OperationService,
     SharedDataService
   ],

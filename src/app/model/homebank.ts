@@ -4,6 +4,7 @@ import {Payee} from "./payee";
 import {Category} from "./category";
 import {Operation} from "./operation";
 import {Property} from "./property";
+import {Favorite} from "./favorite";
 
 export class Homebank {
   v: number;
@@ -13,6 +14,7 @@ export class Homebank {
   accounts: Account[];
   payees: Payee[];
   categories: Category[];
+  favorites: Favorite[];
   operations: Operation[];
 
   constructor(v: number,
@@ -22,6 +24,7 @@ export class Homebank {
               accounts: Account[],
               payees: Payee[],
               categories: Category[],
+              favorites: Favorite[],
               operations: Operation[]) {
     this.v = v;
     this.d = d;
@@ -30,6 +33,7 @@ export class Homebank {
     this.accounts = accounts;
     this.payees = payees;
     this.categories = categories;
+    this.favorites = favorites;
     this.operations = operations;
   }
 }
