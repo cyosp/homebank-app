@@ -5,7 +5,7 @@ export function ensure<T>(argument: T | undefined | null, message: string = 'Thi
   return argument;
 }
 
-export function stringToXmlAttr(name: string, value: string): string {
+export function stringToXmlAttr(name: string, value: string | undefined): string {
   return  value ? " " + name +   "=\""
     + value.replace(/</g, '&lt;')
       .replace(/>/g, '&gt;') // Realy needed ?
@@ -15,10 +15,10 @@ export function stringToXmlAttr(name: string, value: string): string {
     + "\"" : "";
 }
 
-export function numberToXmlAttr(name: string, value: number): string {
+export function numberToXmlAttr(name: string, value: number | undefined): string {
   return value ? " " + name + "=\"" + value + "\"" : "";
 }
 
-export function numberToXmlAttrWithResolution(name: string, value: any, resolutionValue: number): string {
+export function numberToXmlAttrWithResolution(name: string, value: any, resolutionValue: number | undefined): string {
   return value ? " " + name + "=\"" + resolutionValue + "\"" : "";
 }

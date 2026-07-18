@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Category} from "../model/category";
-import {ensure} from "../utils";
+import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
 
 @Injectable()
 export class CategoryService {
@@ -22,5 +22,22 @@ export class CategoryService {
     let flags = homebankXmlDocument.evaluate("@flags", xmlCategory, null, XPathResult.NUMBER_TYPE, null).numberValue;
     let name = homebankXmlDocument.evaluate("@name", xmlCategory, null, XPathResult.STRING_TYPE, null).stringValue;
     return new Category(key, category, flags, name);
+  }
+
+  private categoryToXml(category: Category): string {
+    return "<cat"
+      + numberToXmlAttr("key", category.key)
+      + numberToXmlAttrWithResolution("parent", category.parent, category.parent?.key)
+      + numberToXmlAttr("flags", category.flags)
+      + stringToXmlAttr("name", category.name)
+      + "/>";
+  }
+
+  public toXml(categories: Category[]): string {
+    let xml = "";
+    categories.forEach(category => {
+      xml += this.categoryToXml(category);
+    })
+    return xml;
   }
 }

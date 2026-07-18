@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Category} from "../model/category";
-import {ensure} from "../utils";
+import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
 import {Payee} from "../model/payee";
 import {Operation} from "../model/operation";
 import {Account} from "../model/account";
@@ -40,5 +40,27 @@ export class OperationService {
     let kxfer = homebankXmlDocument.evaluate("@kxfer", xmlOperation, null, XPathResult.NUMBER_TYPE, null).numberValue;
 
     return new Operation(date, amount, account, payee, category, wording, flags, destinationAccount, kxfer);
+  }
+
+  private operationToXml(operation: Operation): string {
+    return "<ope"
+      + numberToXmlAttr("date", operation.date)
+      + numberToXmlAttr("amount", operation.amount)
+      + numberToXmlAttrWithResolution("account", operation.account, operation.account?.key)
+      + numberToXmlAttrWithResolution("payee", operation.payee, operation.payee?.key)
+      + numberToXmlAttrWithResolution("category", operation.category, operation.category?.key)
+      + stringToXmlAttr("wording", operation.wording)
+      + numberToXmlAttr("flags", operation.flags)
+      + numberToXmlAttrWithResolution("dst_account", operation.destinationAccount, operation.destinationAccount?.key)
+      + numberToXmlAttr("kxfer", operation.kxfer)
+      + "/>";
+  }
+
+  public toXml(operations: Operation[]): string {
+    let xml = "";
+    operations.forEach(operation => {
+      xml += this.operationToXml(operation);
+    })
+    return xml;
   }
 }
