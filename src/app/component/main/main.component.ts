@@ -3,7 +3,8 @@ import {HomebankService} from "../../service/homebank.service";
 import {SharedDataService} from "../../service/shared-data.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {faRightFromBracket, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import {faRightFromBracket, faSave, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class MainComponent {
   isTogglerCollapsed: boolean;
   homebankTitle: string;
   disconnectIcon: IconDefinition;
+  saveIcon: IconDefinition;
   fileReader: FileReader;
   domParser: DOMParser;
   homebankFileLoaded: boolean;
@@ -25,6 +27,7 @@ export class MainComponent {
     this.isTogglerCollapsed = true;
     this.homebankTitle = "";
     this.disconnectIcon = faRightFromBracket;
+    this.saveIcon = faSave;
     this.fileReader = new FileReader();
     this.domParser = new DOMParser();
     this.homebankFileLoaded = false;
@@ -72,5 +75,10 @@ export class MainComponent {
   disconnect() {
     this.sharedDataService.resetHomebank();
     this.router.navigate(['/']);
+  }
+
+  save() {
+    const blob = new Blob([ this.homebankService.toXml()], { type: "text/xml;charset=utf-8" });
+    saveAs(blob, "hb.xml");
   }
 }

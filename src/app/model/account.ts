@@ -1,9 +1,10 @@
 import {Operation} from "./operation";
+import {Currency} from "./currency";
 
 export class Account {
   key: number;
   pos: number;
-  currencyIso: string;
+  currency: Currency;
   name: string;
   initial: number;
   balance: number;
@@ -15,7 +16,7 @@ export class Account {
 
   constructor(key: number,
               pos: number,
-              currencyIso: string,
+              currency: Currency,
               name: string,
               initial: number,
               minimum: number,
@@ -24,7 +25,7 @@ export class Account {
               ) {
     this.key = key;
     this.pos = pos;
-    this.currencyIso = currencyIso;
+    this.currency = currency;
     this.name = name;
     this.initial = initial;
     this.balance = this.initial;

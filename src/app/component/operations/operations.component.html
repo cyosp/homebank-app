@@ -15,8 +15,8 @@
       <td class="cell-date">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</td>
       <td class="cell-payee">{{ operation.payee?.name }}</td>
       <td class="cell-category">{{ operation.category?.name }}</td>
-      <td class="cell-amount">{{ operation.amount | currency:operation.account.currencyIso }}</td>
-      <td class="cell-balance">{{ operation.balance | currency:operation.account.currencyIso }}</td>
+      <td class="cell-amount">{{ operation.amount | currency:operation.account.currency.iso }}</td>
+      <td class="cell-balance">{{ operation.balance | currency:operation.account.currency.iso }}</td>
       <td class="cell-wording">{{ operation.wording }}</td>
     </tr>
     </tbody>

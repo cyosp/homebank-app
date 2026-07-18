@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {ensure} from "../utils";
+import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
 import {Currency} from "../model/currency";
 import {Property} from "../model/property";
 
@@ -23,10 +23,20 @@ export class PropertiesService {
     let autoWeekday = homebankXmlDocument.evaluate("@auto_weekday", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
     let autoNbmonths = homebankXmlDocument.evaluate("@auto_nbmonths", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
     return new Property(title,
-      ensure(currencies.find(currency => currency.key === currencyValue)).iso,
+      ensure(currencies.find(currency => currency.key === currencyValue)),
       autoSmode,
       autoWeekday,
       autoNbmonths
     );
+  }
+
+  public toXml(property: Property): string {
+    return "<properties"
+      + stringToXmlAttr("title", property.title)
+      + numberToXmlAttrWithResolution("curr", property.currency, property.currency.key)
+      + numberToXmlAttr("auto_smode", property.autoSmode)
+      + numberToXmlAttr("auto_weekday", property.autoWeekday)
+      + numberToXmlAttr("auto_nbmonths", property.autoNbmonths)
+      + "/>";
   }
 }

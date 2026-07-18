@@ -6,6 +6,8 @@ import {Operation} from "./operation";
 import {Property} from "./property";
 
 export class Homebank {
+  v: number;
+  d: string;
   currencies: Currency[];
   property: Property;
   accounts: Account[];
@@ -13,12 +15,16 @@ export class Homebank {
   categories: Category[];
   operations: Operation[];
 
-  constructor(currencies: Currency[],
+  constructor(v: number,
+              d: string,
+              currencies: Currency[],
               property: Property,
               accounts: Account[],
               payees: Payee[],
               categories: Category[],
               operations: Operation[]) {
+    this.v = v;
+    this.d = d;
     this.currencies = currencies;
     this.property = property;
     this.accounts = accounts;

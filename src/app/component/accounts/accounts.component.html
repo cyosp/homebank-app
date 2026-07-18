@@ -12,7 +12,7 @@
         {{ account.name }}
       </a>
     </td>
-    <td class="balance">{{ account.balance | currency:account.currencyIso }}</td>
+    <td class="balance">{{ account.balance | currency:account.currency.iso }}</td>
   </tr>
   </tbody>
 </table>

@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
-import {ensure} from "../utils";
+import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
 import {Currency} from "../model/currency";
 import {Account} from "../model/account";
-import {Operation} from "../model/operation";
 
 @Injectable()
 export class AccountService {
@@ -28,12 +27,33 @@ export class AccountService {
     let flags = homebankXmlDocument.evaluate("@flags", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
     return new Account(key,
       pos,
-      ensure(currencies.find(currency => currency.key === currencyValue)).iso,
+      ensure(currencies.find(currency => currency.key === currencyValue)),
       name,
       initial,
       minimum,
       maximum,
       flags
     );
+  }
+
+  private accountToXml(accont: Account): string {
+    return "<account"
+      + numberToXmlAttr("key", accont.key)
+      + numberToXmlAttr("pos", accont.pos)
+      + numberToXmlAttrWithResolution("iso", accont.currency, accont.currency.key)
+      + stringToXmlAttr("name", accont.name)
+      + numberToXmlAttr("initial", accont.initial)
+      + numberToXmlAttr("minimum", accont.minimum)
+      + numberToXmlAttr("maximum", accont.maximum)
+      + numberToXmlAttr("flags", accont.flags)
+      + "/>";
+  }
+
+  public toXml(accounts: Account[]): string {
+    let xml = "";
+    accounts.forEach(account => {
+      xml += this.accountToXml(account);
+    })
+    return xml;
   }
 }
