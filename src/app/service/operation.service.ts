@@ -50,7 +50,7 @@ export class OperationService {
       + numberToXmlAttr("flags", operation.flags)
       + numberToXmlAttrWithResolution("dst_account", operation.destinationAccount, operation.destinationAccount?.key)
       + numberToXmlAttr("kxfer", operation.kxfer)
-      + "/>";
+      + "/>\n";
   }
 
   public toXml(operations: Operation[]): string {

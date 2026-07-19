@@ -43,7 +43,7 @@ export class CurrencyService {
       + numberToXmlAttr("frac", currency.frac)
       + numberToXmlAttr("rate", currency.rate)
       + numberToXmlAttr("mdate", currency.mdate)
-      + "/>";
+      + "/>\n";
   }
 
   public toXml(currencies: Currency[]): string {

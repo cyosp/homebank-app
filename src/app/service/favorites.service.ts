@@ -44,7 +44,7 @@ export class FavoriteService {
       + numberToXmlAttr("recflg", favorite.recflg)
       + numberToXmlAttr("nextdate", favorite.nextdate)
       + numberToXmlAttr("every", favorite.every)
-      + "/>";
+      + "/>\n";
   }
 
   public toXml(favorites: Favorite[]): string {

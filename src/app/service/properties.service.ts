@@ -41,6 +41,6 @@ export class PropertiesService {
       + numberToXmlAttr("auto_smode", property.autoSmode)
       + numberToXmlAttr("auto_weekday", property.autoWeekday)
       + numberToXmlAttr("auto_nbmonths", property.autoNbmonths)
-      + "/>";
+      + "/>\n";
   }
 }

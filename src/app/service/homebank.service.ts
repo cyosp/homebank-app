@@ -79,13 +79,13 @@ export class HomebankService {
     if (homebank) {
       return "<?xml version=\"1.0\"?>\n"
         + "<homebank" + numberToXmlAttr("v", homebank.v) + stringToXmlAttr("d", homebank.d) + ">\n"
-        + this.propertiesService.toXml(homebank.property) + "\n"
-        + this.currencyService.toXml(homebank.currencies) + "\n"
-        + this.accountService.toXml(homebank.accounts) + "\n"
-        + this.payeeService.toXml(homebank.payees) + "\n"
-        + this.categoryService.toXml(homebank.categories) + "\n"
-        + this.favoritesService.toXml(homebank.favorites) + "\n"
-        + this.operationService.toXml(homebank.operations) + "\n"
+        + this.propertiesService.toXml(homebank.property)
+        + this.currencyService.toXml(homebank.currencies)
+        + this.accountService.toXml(homebank.accounts)
+        + this.payeeService.toXml(homebank.payees)
+        + this.categoryService.toXml(homebank.categories)
+        + this.favoritesService.toXml(homebank.favorites)
+        + this.operationService.toXml(homebank.operations)
         + "</homebank>";
     } else {
       throw new DOMException("No home bank file loaded");

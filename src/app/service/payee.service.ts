@@ -26,7 +26,7 @@ export class PayeeService {
     return "<pay"
       + numberToXmlAttr("key", payee.key)
       + stringToXmlAttr("name", payee.name)
-      + "/>";
+      + "/>\n";
   }
 
   public toXml(payees: Payee[]): string {

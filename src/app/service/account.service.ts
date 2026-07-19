@@ -47,7 +47,7 @@ export class AccountService {
       + numberToXmlAttr("minimum", accont.minimum)
       + numberToXmlAttr("maximum", accont.maximum)
       + numberToXmlAttr("flags", accont.flags)
-      + "/>";
+      + "/>\n";
   }
 
   public toXml(accounts: Account[]): string {

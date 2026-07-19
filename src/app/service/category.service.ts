@@ -38,7 +38,7 @@ export class CategoryService {
       + numberToXmlAttrWithResolution("parent", category.parent, category.parent?.key)
       + numberToXmlAttr("flags", category.flags)
       + stringToXmlAttr("name", category.name)
-      + "/>";
+      + "/>\n";
   }
 
   public toXml(categories: Category[]): string {
