@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {Currency} from "../model/currency";
-import {numberToXmlAttr, stringToXmlAttr} from "../utils";
+import {getXpathResult, numberToXmlAttr, stringToXmlAttr, xmlAttrToNumber, xmlAttrToString} from "../utils";
 
 @Injectable()
 export class CurrencyService {
   public load(homebankXmlDocument: XMLDocument) {
     let currencies: Currency[] = [];
-    let xmlCurrencies = homebankXmlDocument.evaluate("/homebank/cur", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlCurrencies = getXpathResult(homebankXmlDocument, "/homebank/cur");
     let xmlCurrency = xmlCurrencies.iterateNext();
     while (xmlCurrency) {
       currencies.push(this.loadCurrency(homebankXmlDocument, xmlCurrency));
@@ -16,28 +16,19 @@ export class CurrencyService {
   }
 
   private loadCurrency(homebankXmlDocument: XMLDocument, xmlCurrency: Node): Currency {
-    let key = homebankXmlDocument.evaluate("@key", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let flags = homebankXmlDocument.evaluate("@flags", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let iso = homebankXmlDocument.evaluate("@iso", xmlCurrency, null, XPathResult.STRING_TYPE, null).stringValue;
-    let name = homebankXmlDocument.evaluate("@name", xmlCurrency, null, XPathResult.STRING_TYPE, null).stringValue;
-    let symb = homebankXmlDocument.evaluate("@symb", xmlCurrency, null, XPathResult.STRING_TYPE, null).stringValue;
-    let syprf = homebankXmlDocument.evaluate("@syprf", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let dchar = homebankXmlDocument.evaluate("@dchar", xmlCurrency, null, XPathResult.STRING_TYPE, null).stringValue;
-    let gchar = homebankXmlDocument.evaluate("@gchar", xmlCurrency, null, XPathResult.STRING_TYPE, null).stringValue;
-    let frac = homebankXmlDocument.evaluate("@frac", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let rate = homebankXmlDocument.evaluate("@rate", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let mdate = homebankXmlDocument.evaluate("@mdate", xmlCurrency, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    return new Currency(key,
-      flags,
-      iso,
-      name,
-      symb,
-      syprf,
-      dchar,
-      gchar,
-      frac,
-      rate,
-      mdate);
+    return new Currency(
+      xmlAttrToNumber(homebankXmlDocument, xmlCurrency, "key"),
+      xmlAttrToNumber(homebankXmlDocument, xmlCurrency, "flags"),
+      xmlAttrToString(homebankXmlDocument, xmlCurrency, "iso"),
+      xmlAttrToString(homebankXmlDocument, xmlCurrency, "name"),
+      xmlAttrToString(homebankXmlDocument, xmlCurrency, "symb"),
+      xmlAttrToNumber(homebankXmlDocument, xmlCurrency, "syprf"),
+      xmlAttrToString(homebankXmlDocument, xmlCurrency, "dchar"),
+      xmlAttrToString(homebankXmlDocument, xmlCurrency, "gchar"),
+      xmlAttrToNumber(homebankXmlDocument, xmlCurrency, "frac"),
+      xmlAttrToNumber(homebankXmlDocument, xmlCurrency, "rate"),
+      xmlAttrToNumber(homebankXmlDocument, xmlCurrency, "mdate")
+    );
   }
 
   private currencyToXml(currency: Currency): string {

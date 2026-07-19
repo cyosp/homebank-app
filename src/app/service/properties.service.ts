@@ -1,5 +1,13 @@
 import {Injectable} from "@angular/core";
-import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
+import {
+  ensure,
+  getXpathResult,
+  numberToXmlAttr,
+  numberToXmlAttrWithResolution,
+  stringToXmlAttr,
+  xmlAttrToNumber,
+  xmlAttrToString
+} from "../utils";
 import {Currency} from "../model/currency";
 import {Property} from "../model/property";
 
@@ -7,7 +15,7 @@ import {Property} from "../model/property";
 export class PropertiesService {
   public load(homebankXmlDocument: XMLDocument, currencies: Currency[]) {
     let properties = [];
-    let xmlProperties = homebankXmlDocument.evaluate("/homebank/properties", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlProperties = getXpathResult(homebankXmlDocument, "/homebank/properties");
     let xmlProperty = xmlProperties.iterateNext();
     while (xmlProperty) {
       properties.push(this.loadProperty(homebankXmlDocument, xmlProperty, currencies));
@@ -16,17 +24,13 @@ export class PropertiesService {
     return properties[0];
   }
 
-  private loadProperty(homebankXmlDocument: XMLDocument, xmlAccount: Node, currencies: Currency[]): Property {
-    let title = homebankXmlDocument.evaluate("@title", xmlAccount, null, XPathResult.STRING_TYPE, null).stringValue;
-    let currencyValue = homebankXmlDocument.evaluate("@curr", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let autoSmode = homebankXmlDocument.evaluate("@auto_smode", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let autoWeekday = homebankXmlDocument.evaluate("@auto_weekday", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let autoNbmonths = homebankXmlDocument.evaluate("@auto_nbmonths", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    return new Property(title,
-      ensure(currencies.find(currency => currency.key === currencyValue)),
-      autoSmode,
-      autoWeekday,
-      autoNbmonths
+  private loadProperty(homebankXmlDocument: XMLDocument, xmlProperty: Node, currencies: Currency[]): Property {
+    return new Property(
+      xmlAttrToString(homebankXmlDocument, xmlProperty, "title"),
+      ensure(currencies.find(currency => currency.key === xmlAttrToNumber(homebankXmlDocument, xmlProperty, "curr"))),
+      xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_smode"),
+      xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_weekday"),
+      xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_nbmonths")
     );
   }
 

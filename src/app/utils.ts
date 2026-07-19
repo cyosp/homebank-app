@@ -5,8 +5,20 @@ export function ensure<T>(argument: T | undefined | null, message: string = 'Thi
   return argument;
 }
 
+export function getXpathResult(xmlDocument: XMLDocument, xpath: string): XPathResult {
+  return xmlDocument.evaluate(xpath, xmlDocument, null, XPathResult.ANY_TYPE, null);
+}
+
+export function xmlAttrToString(xmlDocument: XMLDocument, node: Node, name: string): string {
+  return xmlDocument.evaluate("@" + name, node, null, XPathResult.STRING_TYPE, null).stringValue;
+}
+
+export function xmlAttrToNumber(xmlDocument: XMLDocument, node: Node, name: string): number {
+  return xmlDocument.evaluate("@" + name, node, null, XPathResult.NUMBER_TYPE, null).numberValue;
+}
+
 export function stringToXmlAttr(name: string, value: string | undefined): string {
-  return  value ? " " + name +   "=\""
+  return value ? " " + name + "=\""
     + value.replace(/</g, '&lt;')
       .replace(/>/g, '&gt;') // Realy needed ?
       .replace(/"/g, '&quot;')

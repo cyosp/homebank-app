@@ -1,12 +1,20 @@
 import {Injectable} from "@angular/core";
 import {Category} from "../model/category";
-import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
+import {
+  ensure,
+  getXpathResult,
+  numberToXmlAttr,
+  numberToXmlAttrWithResolution,
+  stringToXmlAttr,
+  xmlAttrToNumber,
+  xmlAttrToString
+} from "../utils";
 
 @Injectable()
 export class CategoryService {
   public load(homebankXmlDocument: XMLDocument) {
     let categories: Category[] = [];
-    let xmlCategories = homebankXmlDocument.evaluate("/homebank/cat", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlCategories = getXpathResult(homebankXmlDocument, "/homebank/cat");
     let xmlCategory = xmlCategories.iterateNext();
     while (xmlCategory) {
       categories.push(this.loadCategory(homebankXmlDocument, xmlCategory, categories));
@@ -16,12 +24,12 @@ export class CategoryService {
   }
 
   private loadCategory(homebankXmlDocument: XMLDocument, xmlCategory: Node, categories: Category[]): Category {
-    let key = homebankXmlDocument.evaluate("@key", xmlCategory, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let parentNumberValue = homebankXmlDocument.evaluate("@parent", xmlCategory, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let category = parentNumberValue ? ensure(categories.find(category => category.key === parentNumberValue)) : null;
-    let flags = homebankXmlDocument.evaluate("@flags", xmlCategory, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let name = homebankXmlDocument.evaluate("@name", xmlCategory, null, XPathResult.STRING_TYPE, null).stringValue;
-    return new Category(key, category, flags, name);
+    let parentNumberValue = xmlAttrToNumber(homebankXmlDocument, xmlCategory, "parent");
+    return new Category(
+      xmlAttrToNumber(homebankXmlDocument, xmlCategory, "key"),
+      parentNumberValue ? ensure(categories.find(category => category.key === parentNumberValue)) : null,
+      xmlAttrToNumber(homebankXmlDocument, xmlCategory, "flags"),
+      xmlAttrToString(homebankXmlDocument, xmlCategory, "name"));
   }
 
   private categoryToXml(category: Category): string {

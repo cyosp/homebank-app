@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Category} from "../model/category";
-import {numberToXmlAttr, numberToXmlAttrWithResolution} from "../utils";
+import {getXpathResult, numberToXmlAttr, numberToXmlAttrWithResolution, xmlAttrToNumber} from "../utils";
 import {Payee} from "../model/payee";
 import {Account} from "../model/account";
 import {Favorite} from "../model/favorite";
@@ -9,7 +9,7 @@ import {Favorite} from "../model/favorite";
 export class FavoriteService {
   public load(homebankXmlDocument: XMLDocument, accounts: Account[], payees: Payee[], categories: Category[]) {
     let favorites: Favorite[] = [];
-    let xmlFavorites = homebankXmlDocument.evaluate("/homebank/fav", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlFavorites = getXpathResult(homebankXmlDocument, "/homebank/fav");
     let xmlFavorite = xmlFavorites.iterateNext();
     while (xmlFavorite) {
       favorites.push(this.loadFavortie(homebankXmlDocument, xmlFavorite, accounts, payees, categories));
@@ -19,37 +19,17 @@ export class FavoriteService {
   }
 
   private loadFavortie(homebankXmlDocument: XMLDocument, xmlFavorite: Node, accounts: Account[], payees: Payee[], categories: Category[]): Favorite {
-    let key = homebankXmlDocument.evaluate("@key", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let amount = homebankXmlDocument.evaluate("@amount", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-
-    let accountValue = homebankXmlDocument.evaluate("@account", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let account = accounts.find(account => account.key === accountValue);
-
-    let dstAccountValue = homebankXmlDocument.evaluate("@dst_account", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let destinationAccount = accounts.find(account => account.key === dstAccountValue);
-
-    let paymode = homebankXmlDocument.evaluate("@paymode", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-
-    let payeeValue = homebankXmlDocument.evaluate("@payee", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let payee = payees.find(payee => payee.key === payeeValue);
-
-    let categoryValue = homebankXmlDocument.evaluate("@category", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let category = categories.find(category => category.key === categoryValue);
-
-    let recflg = homebankXmlDocument.evaluate("@recflg", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let nextdate = homebankXmlDocument.evaluate("@nextdate", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let every = homebankXmlDocument.evaluate("@every", xmlFavorite, null, XPathResult.NUMBER_TYPE, null).numberValue;
-
-    return new Favorite(key,
-      amount,
-      account,
-      destinationAccount,
-      paymode,
-      payee,
-      category,
-      recflg,
-      nextdate,
-      every);
+    return new Favorite(
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "key"),
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "amount"),
+      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "account")),
+      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "dst_account")),
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "paymode") ,
+      payees.find(payee => payee.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "payee")),
+      categories.find(category => category.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "category")),
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "recflg"),
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "nextdate"),
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "every"));
   }
 
   private favoriteToXml(favorite: Favorite): string {

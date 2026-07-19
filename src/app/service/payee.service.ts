@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {Payee} from "../model/payee";
-import {numberToXmlAttr, stringToXmlAttr} from "../utils";
+import {getXpathResult, numberToXmlAttr, stringToXmlAttr, xmlAttrToNumber, xmlAttrToString} from "../utils";
 
 @Injectable()
 export class PayeeService {
   public load(homebankXmlDocument: XMLDocument) {
     let payees: Payee[] = [];
-    let xmlPayees = homebankXmlDocument.evaluate("/homebank/pay", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlPayees = getXpathResult(homebankXmlDocument, "/homebank/pay");
     let xmlPayee = xmlPayees.iterateNext();
     while (xmlPayee) {
       payees.push(this.loadPayee(homebankXmlDocument, xmlPayee));
@@ -16,9 +16,10 @@ export class PayeeService {
   }
 
   private loadPayee(homebankXmlDocument: XMLDocument, xmlPayee: Node): Payee {
-    let key = homebankXmlDocument.evaluate("@key", xmlPayee, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let name = homebankXmlDocument.evaluate("@name", xmlPayee, null, XPathResult.STRING_TYPE, null).stringValue;
-    return new Payee(key, name);
+    return new Payee(
+      xmlAttrToNumber(homebankXmlDocument, xmlPayee, "key"),
+      xmlAttrToString(homebankXmlDocument, xmlPayee, "name")
+    );
   }
 
   private payeeToXml(payee: Payee): string {

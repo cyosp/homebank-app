@@ -1,5 +1,13 @@
 import {Injectable} from "@angular/core";
-import {ensure, numberToXmlAttr, numberToXmlAttrWithResolution, stringToXmlAttr} from "../utils";
+import {
+  ensure,
+  getXpathResult,
+  numberToXmlAttr,
+  numberToXmlAttrWithResolution,
+  stringToXmlAttr,
+  xmlAttrToNumber,
+  xmlAttrToString
+} from "../utils";
 import {Currency} from "../model/currency";
 import {Account} from "../model/account";
 
@@ -7,7 +15,7 @@ import {Account} from "../model/account";
 export class AccountService {
   public load(homebankXmlDocument: XMLDocument, currencies: Currency[]) {
     let accounts = [];
-    let xmlAccounts = homebankXmlDocument.evaluate("/homebank/account", homebankXmlDocument, null, XPathResult.ANY_TYPE, null);
+    let xmlAccounts = getXpathResult(homebankXmlDocument, "/homebank/account");
     let xmlAccount = xmlAccounts.iterateNext();
     while (xmlAccount) {
       accounts.push(this.loadAccount(homebankXmlDocument, xmlAccount, currencies));
@@ -17,22 +25,15 @@ export class AccountService {
   }
 
   private loadAccount(homebankXmlDocument: XMLDocument, xmlAccount: Node, currencies: Currency[]): Account {
-    let key = homebankXmlDocument.evaluate("@key", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let pos = homebankXmlDocument.evaluate("@pos", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let currencyValue = homebankXmlDocument.evaluate("@curr", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let name = homebankXmlDocument.evaluate("@name", xmlAccount, null, XPathResult.STRING_TYPE, null).stringValue;
-    let initial = homebankXmlDocument.evaluate("@initial", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let minimum = homebankXmlDocument.evaluate("@minimum", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let maximum = homebankXmlDocument.evaluate("@maximum", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    let flags = homebankXmlDocument.evaluate("@flags", xmlAccount, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    return new Account(key,
-      pos,
-      ensure(currencies.find(currency => currency.key === currencyValue)),
-      name,
-      initial,
-      minimum,
-      maximum,
-      flags
+    return new Account(
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "key"),
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "pos"),
+      ensure(currencies.find(currency => currency.key === xmlAttrToNumber(homebankXmlDocument, xmlAccount, "curr"))),
+      xmlAttrToString(homebankXmlDocument, xmlAccount, "name"),
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "initial"),
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "minimum"),
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "maximum"),
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "flags")
     );
   }
 
