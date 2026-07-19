@@ -20,10 +20,10 @@ export function xmlAttrToNumber(xmlDocument: XMLDocument, node: Node, name: stri
 export function stringToXmlAttr(name: string, value: string | undefined): string {
   return value ? " " + name + "=\""
     + value.replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;') // Realy needed ?
+      .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;')
-      .replace(/&/g, '&amp;')
+      .replace(/&(?!(lt;|gt;|quot;|apos;|amp;))/g, '&amp;')
     + "\"" : "";
 }
 
