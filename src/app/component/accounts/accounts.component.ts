@@ -22,7 +22,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
   isDisplayable(account: Account): boolean {
     const hideAccountFromSummaryFlag = 16;
-    return (account.flags & hideAccountFromSummaryFlag) != hideAccountFromSummaryFlag;
+    return account.flags === undefined || isNaN(account.flags) || (account.flags & hideAccountFromSummaryFlag) != hideAccountFromSummaryFlag;
   }
 
   get displayableAccounts() {

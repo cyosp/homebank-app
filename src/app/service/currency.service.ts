@@ -36,6 +36,7 @@ export class CurrencyService {
       + numberToXmlAttr("key", currency.key)
       + numberToXmlAttr("flags", currency.flags)
       + stringToXmlAttr("iso", currency.iso)
+      + stringToXmlAttr("name", currency.name)
       + stringToXmlAttr("symb", currency.symb)
       + numberToXmlAttr("syprf", currency.syprf)
       + stringToXmlAttr("dchar", currency.dchar)

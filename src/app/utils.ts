@@ -1,3 +1,8 @@
+import {Account} from "./model/account";
+import {Currency} from "./model/currency";
+import {Payee} from "./model/payee";
+import {Category} from "./model/category";
+
 export function ensure<T>(argument: T | undefined | null, message: string = 'This value was promised to be there'): T {
   if (argument === undefined || argument === null) {
     throw new TypeError(message);
@@ -17,6 +22,11 @@ export function xmlAttrToNumber(xmlDocument: XMLDocument, node: Node, name: stri
   return xmlDocument.evaluate("@" + name, node, null, XPathResult.NUMBER_TYPE, null).numberValue;
 }
 
+export function xmlAttrToNumberOrUndefined(xmlDocument: XMLDocument, node: Node, name: string): number | undefined {
+  let value = xmlAttrToNumber(xmlDocument, node, name);
+  return Number.isNaN(value) ? undefined : value;
+}
+
 export function stringToXmlAttr(name: string, value: string | undefined): string {
   return value ? " " + name + "=\""
     + value.replace(/</g, '&lt;')
@@ -28,9 +38,9 @@ export function stringToXmlAttr(name: string, value: string | undefined): string
 }
 
 export function numberToXmlAttr(name: string, value: number | undefined): string {
-  return value ? " " + name + "=\"" + value + "\"" : "";
+  return (value !== undefined && !isNaN(value)) ? " " + name + "=\"" + value + "\"" : "";
 }
 
-export function numberToXmlAttrWithResolution(name: string, value: any, resolutionValue: number | undefined): string {
-  return value ? " " + name + "=\"" + resolutionValue + "\"" : "";
+export function numberToXmlAttrWithResolution(name: string, value: Currency | Account | Payee | Category | undefined | null, resolutionValue: number | undefined): string {
+  return (value !== undefined && value !== null) ? " " + name + "=\"" + resolutionValue + "\"" : "";
 }

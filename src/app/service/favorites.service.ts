@@ -1,6 +1,13 @@
 import {Injectable} from "@angular/core";
 import {Category} from "../model/category";
-import {getXpathResult, numberToXmlAttr, numberToXmlAttrWithResolution, xmlAttrToNumber} from "../utils";
+import {
+  getXpathResult,
+  numberToXmlAttr,
+  numberToXmlAttrWithResolution,
+  stringToXmlAttr,
+  xmlAttrToNumber, xmlAttrToNumberOrUndefined,
+  xmlAttrToString
+} from "../utils";
 import {Payee} from "../model/payee";
 import {Account} from "../model/account";
 import {Favorite} from "../model/favorite";
@@ -24,12 +31,17 @@ export class FavoriteService {
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "amount"),
       accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "account")),
       accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "dst_account")),
-      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "paymode") ,
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlFavorite, "paymode"),
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "flags"),
       payees.find(payee => payee.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "payee")),
       categories.find(category => category.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "category")),
+      xmlAttrToString(homebankXmlDocument, xmlFavorite, "wording"),
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "recflg"),
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "nextdate"),
-      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "every"));
+      xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "every"),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlFavorite, "unit"),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlFavorite, "weekend"),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlFavorite, "limit"));
   }
 
   private favoriteToXml(favorite: Favorite): string {
@@ -39,11 +51,16 @@ export class FavoriteService {
       + numberToXmlAttrWithResolution("account", favorite.account, favorite.account?.key)
       + numberToXmlAttrWithResolution("dst_account", favorite.destinationAccount, favorite.destinationAccount?.key)
       + numberToXmlAttr("paymode", favorite.paymode)
+      + numberToXmlAttr("flags", favorite.flags)
       + numberToXmlAttrWithResolution("payee", favorite.payee, favorite.payee?.key)
       + numberToXmlAttrWithResolution("category", favorite.category, favorite.category?.key)
+      + stringToXmlAttr("wording", favorite.wording)
       + numberToXmlAttr("recflg", favorite.recflg)
       + numberToXmlAttr("nextdate", favorite.nextdate)
       + numberToXmlAttr("every", favorite.every)
+      + numberToXmlAttr("unit", favorite.unit)
+      + numberToXmlAttr("weekend", favorite.weekend)
+      + numberToXmlAttr("limit", favorite.limit)
       + "/>\n";
   }
 

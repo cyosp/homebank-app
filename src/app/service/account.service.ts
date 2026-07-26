@@ -5,7 +5,7 @@ import {
   numberToXmlAttr,
   numberToXmlAttrWithResolution,
   stringToXmlAttr,
-  xmlAttrToNumber,
+  xmlAttrToNumber, xmlAttrToNumberOrUndefined,
   xmlAttrToString
 } from "../utils";
 import {Currency} from "../model/currency";
@@ -27,26 +27,36 @@ export class AccountService {
   private loadAccount(homebankXmlDocument: XMLDocument, xmlAccount: Node, currencies: Currency[]): Account {
     return new Account(
       xmlAttrToNumber(homebankXmlDocument, xmlAccount, "key"),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlAccount, "flags"),
       xmlAttrToNumber(homebankXmlDocument, xmlAccount, "pos"),
+      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "type"),
       ensure(currencies.find(currency => currency.key === xmlAttrToNumber(homebankXmlDocument, xmlAccount, "curr"))),
       xmlAttrToString(homebankXmlDocument, xmlAccount, "name"),
+      xmlAttrToString(homebankXmlDocument, xmlAccount, "bankname"),
       xmlAttrToNumber(homebankXmlDocument, xmlAccount, "initial"),
       xmlAttrToNumber(homebankXmlDocument, xmlAccount, "minimum"),
       xmlAttrToNumber(homebankXmlDocument, xmlAccount, "maximum"),
-      xmlAttrToNumber(homebankXmlDocument, xmlAccount, "flags")
+      xmlAttrToString(homebankXmlDocument, xmlAccount, "cheque1"),
+      xmlAttrToString(homebankXmlDocument, xmlAccount, "cheque2"),
+      xmlAttrToString(homebankXmlDocument, xmlAccount, "rdate"),
     );
   }
 
   private accountToXml(accont: Account): string {
     return "<account"
       + numberToXmlAttr("key", accont.key)
+      + numberToXmlAttr("flags", accont.flags)
       + numberToXmlAttr("pos", accont.pos)
-      + numberToXmlAttrWithResolution("iso", accont.currency, accont.currency.key)
+      + numberToXmlAttr("type", accont.type)
+      + numberToXmlAttrWithResolution("curr", accont.currency, accont.currency.key)
       + stringToXmlAttr("name", accont.name)
+      + stringToXmlAttr("bankname", accont.bankname)
       + numberToXmlAttr("initial", accont.initial)
       + numberToXmlAttr("minimum", accont.minimum)
       + numberToXmlAttr("maximum", accont.maximum)
-      + numberToXmlAttr("flags", accont.flags)
+      + stringToXmlAttr("cheque1", accont.cheque1)
+      + stringToXmlAttr("cheque2", accont.cheque2)
+      + stringToXmlAttr("rdate", accont.rdate)
       + "/>\n";
   }
 

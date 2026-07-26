@@ -6,17 +6,20 @@ export class Property {
   autoSmode: number;
   autoWeekday: number;
   autoNbmonths: number;
+  earnbyh: number;
 
   constructor(title: string,
               currency: Currency,
               autoSmode: number,
               autoWeekday: number,
               autoNbmonths: number,
+              earnbyh: number,
               ) {
     this.title = title;
     this.currency = currency;
     this.autoSmode = autoSmode;
     this.autoWeekday = autoWeekday;
     this.autoNbmonths = autoNbmonths;
+    this.earnbyh = earnbyh;
   }
 }

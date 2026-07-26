@@ -43,7 +43,7 @@ export class HomebankService {
     this.setBalances(accounts, operations)
 
     const v = homebankXmlDocument.evaluate("/homebank/@v", homebankXmlDocument, null, XPathResult.NUMBER_TYPE, null).numberValue;
-    if (v > this.SUPPORTED_HOMEBANK_VERSION) {
+    if (v !== this.SUPPORTED_HOMEBANK_VERSION) {
       // TODO Replace this native alert
       alert("Homebank supported version: " + this.SUPPORTED_HOMEBANK_VERSION + " whereas loaded version: " + v + ", load could be incomplete and save could result in data loss")
     }

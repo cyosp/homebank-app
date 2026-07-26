@@ -30,7 +30,8 @@ export class PropertiesService {
       ensure(currencies.find(currency => currency.key === xmlAttrToNumber(homebankXmlDocument, xmlProperty, "curr"))),
       xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_smode"),
       xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_weekday"),
-      xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_nbmonths")
+      xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_nbmonths"),
+      xmlAttrToNumber(homebankXmlDocument, xmlProperty, "earnbyh")
     );
   }
 
@@ -41,6 +42,7 @@ export class PropertiesService {
       + numberToXmlAttr("auto_smode", property.autoSmode)
       + numberToXmlAttr("auto_weekday", property.autoWeekday)
       + numberToXmlAttr("auto_nbmonths", property.autoNbmonths)
+      + numberToXmlAttr("earnbyh", property.earnbyh)
       + "/>\n";
   }
 }

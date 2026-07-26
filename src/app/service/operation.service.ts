@@ -6,7 +6,7 @@ import {
   numberToXmlAttr,
   numberToXmlAttrWithResolution,
   stringToXmlAttr,
-  xmlAttrToNumber,
+  xmlAttrToNumber, xmlAttrToNumberOrUndefined,
   xmlAttrToString
 } from "../utils";
 import {Payee} from "../model/payee";
@@ -31,11 +31,13 @@ export class OperationService {
       xmlAttrToNumber(homebankXmlDocument, xmlOperation, "date"),
       xmlAttrToNumber(homebankXmlDocument, xmlOperation, "amount"),
       ensure(accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "account"))),
+      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "dst_account")),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlOperation, "paymode"),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlOperation, "flags"),
       payees.find(payee => payee.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "payee")),
       categories.find(category => category.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "category")),
       xmlAttrToString(homebankXmlDocument, xmlOperation, "wording"),
-      xmlAttrToNumber(homebankXmlDocument, xmlOperation, "flags"),
-      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "dst_account")),
+      xmlAttrToString(homebankXmlDocument, xmlOperation, "info"),
       xmlAttrToNumber(homebankXmlDocument, xmlOperation, "kxfer"));
   }
 
@@ -44,11 +46,13 @@ export class OperationService {
       + numberToXmlAttr("date", operation.date)
       + numberToXmlAttr("amount", operation.amount)
       + numberToXmlAttrWithResolution("account", operation.account, operation.account?.key)
+      + numberToXmlAttrWithResolution("dst_account", operation.destinationAccount, operation.destinationAccount?.key)
+      + numberToXmlAttr("paymode", operation.paymode)
+      + numberToXmlAttr("flags", operation.flags)
       + numberToXmlAttrWithResolution("payee", operation.payee, operation.payee?.key)
       + numberToXmlAttrWithResolution("category", operation.category, operation.category?.key)
       + stringToXmlAttr("wording", operation.wording)
-      + numberToXmlAttr("flags", operation.flags)
-      + numberToXmlAttrWithResolution("dst_account", operation.destinationAccount, operation.destinationAccount?.key)
+      + stringToXmlAttr("info", operation.info)
       + numberToXmlAttr("kxfer", operation.kxfer)
       + "/>\n";
   }
