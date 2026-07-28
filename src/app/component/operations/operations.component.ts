@@ -61,6 +61,10 @@ export class OperationsComponent implements OnInit, OnDestroy {
     }
   }
 
+  isStriped(index: number): boolean {
+    return index % 2 === 0;
+  }
+
   dateToGregorian(date: number): Date {
     return new Date((date - this.DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970) * this.DAY_TO_MILLISECONDS);
   }
