@@ -7,14 +7,25 @@
     <span class="col-4 order-2 col-lg-2 order-lg-1" i18n="@@operations-amount">Montant</span>
     <span class="col-4 order-1 col-lg-2 order-lg-1" i18n="@@operations-balance">Solde</span>
   </div>
+  <!-- TODO Avoid n calls to isInFuture() -->
   <div class="row"
-       *ngFor="let operation of operations; let i = index;  let last = last"
-       [ngClass]="{'striped': isStriped(i), 'last': last}">
+       *ngFor="let operation of operations;
+        let even= even;
+        let first = first;  let last = last;"
+       [ngClass]="{
+       'row-in-future': isInFuture(operation.date),
+       'row-in-future-striped': isInFuture(operation.date) && even,
+       'row-in-past-striped': !isInFuture(operation.date) && even,
+       'first-row-in-future': first && isInFuture(operation.date),
+       'last-row-in-past': last && !isInFuture(operation.date)
+       }">
     <span class="col-4 order-1 col-lg-2 order-lg-1">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</span>
     <span class="col-4 order-2 col-lg-2 order-lg-1">{{ operation.payee?.name }}</span>
     <span class="col-4 order-2 col-lg-2 order-lg-1">{{ operation.category?.name }}</span>
     <span class="col-4 order-1 col-lg-2 order-lg-1">{{ operation.wording }}</span>
-    <span class="col-4 order-2 col-lg-2 order-lg-1 align-self-center amount">{{ operation.amount | currency:operation.account.currency.iso }}</span>
-    <span class="col-4 order-1 col-lg-2 order-lg-1 align-self-center balance">{{ operation.balance | currency:operation.account.currency.iso }}</span>
+    <span
+      class="col-4 order-2 col-lg-2 order-lg-1 align-self-center amount">{{ operation.amount | currency:operation.account.currency.iso }}</span>
+    <span
+      class="col-4 order-1 col-lg-2 order-lg-1 align-self-center balance">{{ operation.balance | currency:operation.account.currency.iso }}</span>
   </div>
 </div>

@@ -61,8 +61,8 @@ export class OperationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  isStriped(index: number): boolean {
-    return index % 2 === 0;
+  isInFuture(date: number): boolean {
+    return this.dateToGregorian(date).getTime() > new Date().getTime();
   }
 
   dateToGregorian(date: number): Date {
