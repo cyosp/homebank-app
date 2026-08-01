@@ -26,7 +26,9 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   get displayableAccounts() {
-    return this.accounts?.filter(account => this.isDisplayable(account));
+    return this.accounts
+      ?.sort((a1, a2) => a1.pos - a2.pos)
+      .filter(account => this.isDisplayable(account));
   }
 
   ngOnDestroy(): void {
