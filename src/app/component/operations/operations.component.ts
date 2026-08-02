@@ -38,9 +38,7 @@ export class OperationsComponent implements OnInit, OnDestroy {
 
   private getAccount(accountId: number): Account | null {
     if (this.homebank) {
-      return ensure(this.homebank.accounts.find(account => {
-        return account.key === accountId;
-      }));
+      return ensure(this.homebank.accounts.get(accountId));
     }
     return null;
   }

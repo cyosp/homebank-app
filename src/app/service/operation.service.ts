@@ -15,7 +15,7 @@ import {Account} from "../model/account";
 
 @Injectable()
 export class OperationService {
-  public load(homebankXmlDocument: XMLDocument, accounts: Account[], payees: Payee[], categories: Category[]) {
+  public load(homebankXmlDocument: XMLDocument, accounts: Map<number, Account>, payees: Map<number, Payee>, categories: Map<number, Category>) {
     let operations: Operation[] = [];
     let xmlOperations = getXpathResult(homebankXmlDocument, "/homebank/ope");
     let xmlOperation = xmlOperations.iterateNext();
@@ -26,16 +26,16 @@ export class OperationService {
     return operations;
   }
 
-  private loadOperation(homebankXmlDocument: XMLDocument, xmlOperation: Node, accounts: Account[], payees: Payee[], categories: Category[]): Operation {
+  private loadOperation(homebankXmlDocument: XMLDocument, xmlOperation: Node, accounts: Map<number, Account>, payees: Map<number, Payee>, categories: Map<number, Category>): Operation {
     return new Operation(
       xmlAttrToNumber(homebankXmlDocument, xmlOperation, "date"),
       xmlAttrToNumber(homebankXmlDocument, xmlOperation, "amount"),
-      ensure(accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "account"))),
-      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "dst_account")),
+      ensure(accounts.get(xmlAttrToNumber(homebankXmlDocument, xmlOperation, "account"))),
+      accounts.get(xmlAttrToNumber(homebankXmlDocument, xmlOperation, "dst_account")),
       xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlOperation, "paymode"),
       xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlOperation, "flags"),
-      payees.find(payee => payee.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "payee")),
-      categories.find(category => category.key === xmlAttrToNumber(homebankXmlDocument, xmlOperation, "category")),
+      payees.get(xmlAttrToNumber(homebankXmlDocument, xmlOperation, "payee")),
+      categories.get(xmlAttrToNumber(homebankXmlDocument, xmlOperation, "category")),
       xmlAttrToString(homebankXmlDocument, xmlOperation, "wording"),
       xmlAttrToString(homebankXmlDocument, xmlOperation, "info"),
       xmlAttrToNumber(homebankXmlDocument, xmlOperation, "kxfer"));

@@ -5,11 +5,12 @@ import {getXpathResult, numberToXmlAttr, stringToXmlAttr, xmlAttrToNumber, xmlAt
 @Injectable()
 export class CurrencyService {
   public load(homebankXmlDocument: XMLDocument) {
-    let currencies: Currency[] = [];
+    let currencies = new Map<number, Currency>();
     let xmlCurrencies = getXpathResult(homebankXmlDocument, "/homebank/cur");
     let xmlCurrency = xmlCurrencies.iterateNext();
     while (xmlCurrency) {
-      currencies.push(this.loadCurrency(homebankXmlDocument, xmlCurrency));
+      const currency = this.loadCurrency(homebankXmlDocument, xmlCurrency);
+      currencies.set(currency.key, currency);
       xmlCurrency = xmlCurrencies.iterateNext();
     }
     return currencies;
@@ -47,7 +48,7 @@ export class CurrencyService {
       + "/>\n";
   }
 
-  public toXml(currencies: Currency[]): string {
+  public toXml(currencies: Map<number, Currency>): string {
     let xml = "";
     currencies.forEach(currency => {
       xml += this.currencyToXml(currency);

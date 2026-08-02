@@ -13,21 +13,22 @@ import {
 @Injectable()
 export class CategoryService {
   public load(homebankXmlDocument: XMLDocument) {
-    let categories: Category[] = [];
+    let categories = new Map<number, Category>();
     let xmlCategories = getXpathResult(homebankXmlDocument, "/homebank/cat");
     let xmlCategory = xmlCategories.iterateNext();
     while (xmlCategory) {
-      categories.push(this.loadCategory(homebankXmlDocument, xmlCategory, categories));
+      let category = this.loadCategory(homebankXmlDocument, xmlCategory, categories);
+      categories.set(category.key, category);
       xmlCategory = xmlCategories.iterateNext();
     }
     return categories;
   }
 
-  private loadCategory(homebankXmlDocument: XMLDocument, xmlCategory: Node, categories: Category[]): Category {
+  private loadCategory(homebankXmlDocument: XMLDocument, xmlCategory: Node, categories: Map<number, Category>): Category {
     let parentNumberValue = xmlAttrToNumber(homebankXmlDocument, xmlCategory, "parent");
     return new Category(
       xmlAttrToNumber(homebankXmlDocument, xmlCategory, "key"),
-      parentNumberValue ? ensure(categories.find(category => category.key === parentNumberValue)) : null,
+      parentNumberValue ? ensure(categories.get(parentNumberValue)) : null,
       xmlAttrToNumber(homebankXmlDocument, xmlCategory, "flags"),
       xmlAttrToString(homebankXmlDocument, xmlCategory, "name"));
   }
@@ -41,7 +42,7 @@ export class CategoryService {
       + "/>\n";
   }
 
-  public toXml(categories: Category[]): string {
+  public toXml(categories: Map<number, Category>): string {
     let xml = "";
     categories.forEach(category => {
       xml += this.categoryToXml(category);

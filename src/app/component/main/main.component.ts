@@ -60,10 +60,9 @@ export class MainComponent {
 
       let startTime = new Date().getTime();
       let homebankXmlDocument = this.domParser.parseFromString(homebankXmlFileContent, 'text/xml');
+      let homebank = this.homebankService.load(homebankXmlDocument);
       console.debug('HomeBank file loaded in ' + (new Date().getTime() - startTime) + ' ms');
 
-      this.sharedDataService.setHomebankXmlDocument(homebankXmlDocument);
-      let homebank = this.homebankService.load(homebankXmlDocument);
       this.sharedDataService.setTitle(homebank.property.title);
       this.sharedDataService.setHomebank(homebank);
       this.sharedDataService.setHomebankFileLoaded(true);

@@ -5,11 +5,12 @@ import {getXpathResult, numberToXmlAttr, stringToXmlAttr, xmlAttrToNumber, xmlAt
 @Injectable()
 export class PayeeService {
   public load(homebankXmlDocument: XMLDocument) {
-    let payees: Payee[] = [];
+    let payees = new Map<number, Payee>();
     let xmlPayees = getXpathResult(homebankXmlDocument, "/homebank/pay");
     let xmlPayee = xmlPayees.iterateNext();
     while (xmlPayee) {
-      payees.push(this.loadPayee(homebankXmlDocument, xmlPayee));
+      let payee = this.loadPayee(homebankXmlDocument, xmlPayee);
+      payees.set(payee.key, payee);
       xmlPayee = xmlPayees.iterateNext();
     }
     return payees;
@@ -29,7 +30,7 @@ export class PayeeService {
       + "/>\n";
   }
 
-  public toXml(payees: Payee[]): string {
+  public toXml(payees:  Map<number, Payee>): string {
     let xml = "";
     payees.forEach(payee => {
       xml += this.payeeToXml(payee);

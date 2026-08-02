@@ -5,7 +5,8 @@ import {
   numberToXmlAttr,
   numberToXmlAttrWithResolution,
   stringToXmlAttr,
-  xmlAttrToNumber, xmlAttrToNumberOrUndefined,
+  xmlAttrToNumber,
+  xmlAttrToNumberOrUndefined,
   xmlAttrToString
 } from "../utils";
 import {Payee} from "../model/payee";
@@ -14,27 +15,28 @@ import {Favorite} from "../model/favorite";
 
 @Injectable()
 export class FavoriteService {
-  public load(homebankXmlDocument: XMLDocument, accounts: Account[], payees: Payee[], categories: Category[]) {
-    let favorites: Favorite[] = [];
+  public load(homebankXmlDocument: XMLDocument, accounts: Map<number, Account>, payees: Map<number, Payee>, categories: Map<number, Category>) {
+    let favorites = new Map<number, Favorite>();
     let xmlFavorites = getXpathResult(homebankXmlDocument, "/homebank/fav");
     let xmlFavorite = xmlFavorites.iterateNext();
     while (xmlFavorite) {
-      favorites.push(this.loadFavortie(homebankXmlDocument, xmlFavorite, accounts, payees, categories));
+      let favorire = this.loadFavortie(homebankXmlDocument, xmlFavorite, accounts, payees, categories);
+      favorites.set(favorire.key, favorire);
       xmlFavorite = xmlFavorites.iterateNext();
     }
     return favorites;
   }
 
-  private loadFavortie(homebankXmlDocument: XMLDocument, xmlFavorite: Node, accounts: Account[], payees: Payee[], categories: Category[]): Favorite {
+  private loadFavortie(homebankXmlDocument: XMLDocument, xmlFavorite: Node, accounts: Map<number, Account>, payees: Map<number, Payee>, categories: Map<number, Category>): Favorite {
     return new Favorite(
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "key"),
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "amount"),
-      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "account")),
-      accounts.find(account => account.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "dst_account")),
+      accounts.get(xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "account")),
+      accounts.get(xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "dst_account")),
       xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlFavorite, "paymode"),
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "flags"),
-      payees.find(payee => payee.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "payee")),
-      categories.find(category => category.key === xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "category")),
+      payees.get(xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "payee")),
+      categories.get(xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "category")),
       xmlAttrToString(homebankXmlDocument, xmlFavorite, "wording"),
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "recflg"),
       xmlAttrToNumber(homebankXmlDocument, xmlFavorite, "nextdate"),
@@ -64,7 +66,7 @@ export class FavoriteService {
       + "/>\n";
   }
 
-  public toXml(favorites: Favorite[]): string {
+  public toXml(favorites: Map<number, Favorite>): string {
     let xml = "";
     favorites.forEach(favorite => {
       xml += this.favoriteToXml(favorite);

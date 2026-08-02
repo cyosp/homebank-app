@@ -37,10 +37,10 @@ export class HomebankService {
     let accounts = this.accountService.load(homebankXmlDocument, currencies);
     let payees = this.payeeService.load(homebankXmlDocument);
     let categories = this.categoryService.load(homebankXmlDocument);
-    let favorites = this.favoritesService.load(homebankXmlDocument, accounts, payees, categories);
+    let favorites  = this.favoritesService.load(homebankXmlDocument, accounts, payees, categories);
     let operations = this.operationService.load(homebankXmlDocument, accounts, payees, categories);
 
-    this.setBalances(accounts, operations)
+    this.setBalances(accounts, operations);
 
     const v = homebankXmlDocument.evaluate("/homebank/@v", homebankXmlDocument, null, XPathResult.NUMBER_TYPE, null).numberValue;
     if (v !== this.SUPPORTED_HOMEBANK_VERSION) {
@@ -59,7 +59,7 @@ export class HomebankService {
       operations);
   }
 
-  public setBalances(accounts: Account[], operations: Operation[]): void {
+  public setBalances(accounts: Map<number, Account>, operations: Operation[]): void {
     accounts.forEach(account => {
       let balance = account.initial;
       operations.filter(operation => {

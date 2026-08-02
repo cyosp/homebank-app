@@ -13,7 +13,7 @@ import {Property} from "../model/property";
 
 @Injectable()
 export class PropertiesService {
-  public load(homebankXmlDocument: XMLDocument, currencies: Currency[]) {
+  public load(homebankXmlDocument: XMLDocument, currencies: Map<number, Currency>) {
     let properties = [];
     let xmlProperties = getXpathResult(homebankXmlDocument, "/homebank/properties");
     let xmlProperty = xmlProperties.iterateNext();
@@ -24,10 +24,10 @@ export class PropertiesService {
     return properties[0];
   }
 
-  private loadProperty(homebankXmlDocument: XMLDocument, xmlProperty: Node, currencies: Currency[]): Property {
+  private loadProperty(homebankXmlDocument: XMLDocument, xmlProperty: Node, currencies: Map<number, Currency>): Property {
     return new Property(
       xmlAttrToString(homebankXmlDocument, xmlProperty, "title"),
-      ensure(currencies.find(currency => currency.key === xmlAttrToNumber(homebankXmlDocument, xmlProperty, "curr"))),
+      ensure(currencies.get(xmlAttrToNumber(homebankXmlDocument, xmlProperty, "curr"))),
       xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_smode"),
       xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_weekday"),
       xmlAttrToNumber(homebankXmlDocument, xmlProperty, "auto_nbmonths"),

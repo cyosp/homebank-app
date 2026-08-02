@@ -9,22 +9,22 @@ import {Favorite} from "./favorite";
 export class Homebank {
   v: number;
   d: string;
-  currencies: Currency[];
+  currencies: Map<number, Currency>;
   property: Property;
-  accounts: Account[];
-  payees: Payee[];
-  categories: Category[];
-  favorites: Favorite[];
+  accounts: Map<number, Account>;
+  payees: Map<number, Payee>;
+  categories: Map<number, Category>;
+  favorites: Map<number, Favorite>;
   operations: Operation[];
 
   constructor(v: number,
               d: string,
-              currencies: Currency[],
+              currencies: Map<number, Currency>,
               property: Property,
-              accounts: Account[],
-              payees: Payee[],
-              categories: Category[],
-              favorites: Favorite[],
+              accounts: Map<number, Account>,
+              payees: Map<number, Payee>,
+              categories: Map<number, Category>,
+              favorites: Map<number, Favorite>,
               operations: Operation[]) {
     this.v = v;
     this.d = d;

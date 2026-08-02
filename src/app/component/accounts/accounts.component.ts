@@ -8,7 +8,7 @@ import {Account} from "../../model/account";
   styleUrls: ['./accounts.component.sass']
 })
 export class AccountsComponent implements OnInit, OnDestroy {
-  accounts: Account[] | null;
+  accounts: Map<number, Account> | null;
 
   constructor(private sharedDataService: SharedDataService) {
     this.accounts = null;
@@ -26,8 +26,12 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   get displayableAccounts() {
-    return this.accounts
-      ?.sort((a1, a2) => a1.pos - a2.pos)
+    let localAccounts: Account[] = [];
+    this.accounts?.forEach((account: Account) => {
+      localAccounts.push(account);
+    })
+    return localAccounts
+      .sort((a1, a2) => a1.pos - a2.pos)
       .filter(account => this.isDisplayable(account));
   }
 
