@@ -14,5 +14,6 @@ For each file, the [standardize.xsl](standardize.xsl) is applied.
 It allows to :
 - Transform each decimal number with a precision of only 2 digits
 - Resolve XML entities
+- Sort tags by `key` attribute
 
 At the end, transformed files are compared.
