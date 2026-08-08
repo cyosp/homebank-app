@@ -13,6 +13,25 @@
       <trans-unit id="accounts-balance" datatype="html">
         <target>Solde</target>
       </trans-unit>
+      <!-- operations -->
+      <trans-unit id="operations-date" datatype="html">
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="operations-payee" datatype="html">
+        <target>Tiers</target>
+      </trans-unit>
+      <trans-unit id="operations-category" datatype="html">
+        <target>Catégorie</target>
+      </trans-unit>
+      <trans-unit id="operations-wording" datatype="html">
+        <target>Note</target>
+      </trans-unit>
+      <trans-unit id="operations-amount" datatype="html">
+        <target>Montant</target>
+      </trans-unit>
+      <trans-unit id="operations-balance" datatype="html">
+        <target>Solde</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

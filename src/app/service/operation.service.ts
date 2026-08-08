@@ -15,6 +15,9 @@ import {Account} from "../model/account";
 
 @Injectable()
 export class OperationService {
+  private DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970 = 719163;
+  private DAY_TO_MILLISECONDS = 24 * 60 * 60 * 1000;
+
   public load(homebankXmlDocument: XMLDocument, accounts: Map<number, Account>, payees: Map<number, Payee>, categories: Map<number, Category>) {
     let operations: Operation[] = [];
     let xmlOperations = getXpathResult(homebankXmlDocument, "/homebank/ope");
@@ -63,5 +66,13 @@ export class OperationService {
       xml += this.operationToXml(operation);
     })
     return xml;
+  }
+
+  public dateToGregorian(date: number): Date {
+    return new Date((date - this.DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970) * this.DAY_TO_MILLISECONDS);
+  }
+
+  public stringToHomebankDate(value: string): number {
+    return Date.parse(value) /  this.DAY_TO_MILLISECONDS + this.DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970
   }
 }

@@ -30,11 +30,22 @@ export class PayeeService {
       + "/>\n";
   }
 
-  public toXml(payees:  Map<number, Payee>): string {
+  public toXml(payees: Map<number, Payee>): string {
     let xml = "";
     payees.forEach(payee => {
       xml += this.payeeToXml(payee);
     })
     return xml;
+  }
+
+  private addNew(payees: Map<number, Payee>, value: string): Payee {
+    let maxKey = [...payees.keys()]
+      .reduce((key1, key2) => key1 < key2 ? key2 : key1);
+    let newKey = maxKey + 1;
+    return payees.set(newKey, new Payee(newKey, value)).get(newKey)!;
+  }
+
+  public getOrAdd(payees: Map<number, Payee>, value: string): Payee {
+    return [...payees.values()].find((payee: Payee) => payee.name === value) || this.addNew(payees, value);
   }
 }

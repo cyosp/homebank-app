@@ -7,6 +7,7 @@ import {
   numberToXmlAttrWithResolution,
   stringToXmlAttr,
   xmlAttrToNumber,
+  xmlAttrToNumberOrUndefined,
   xmlAttrToString
 } from "../utils";
 
@@ -29,7 +30,7 @@ export class CategoryService {
     return new Category(
       xmlAttrToNumber(homebankXmlDocument, xmlCategory, "key"),
       parentNumberValue ? ensure(categories.get(parentNumberValue)) : null,
-      xmlAttrToNumber(homebankXmlDocument, xmlCategory, "flags"),
+      xmlAttrToNumberOrUndefined(homebankXmlDocument, xmlCategory, "flags"),
       xmlAttrToString(homebankXmlDocument, xmlCategory, "name"));
   }
 
@@ -48,5 +49,16 @@ export class CategoryService {
       xml += this.categoryToXml(category);
     })
     return xml;
+  }
+
+  private addNew(categories: Map<number, Category>, value: string): Category {
+    let maxKey = [...categories.keys()]
+      .reduce((key1, key2) => key1 < key2 ? key2 : key1);
+    let newKey = maxKey + 1;
+    return categories.set(newKey, new Category(newKey, null, undefined, value)).get(newKey)!;
+  }
+
+  public getOrAdd(categories: Map<number, Category>, value: string): Category {
+    return [...categories.values()].find((category: Category) => category.name === value) || this.addNew(categories, value);
   }
 }

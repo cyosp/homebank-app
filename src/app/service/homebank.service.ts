@@ -37,10 +37,10 @@ export class HomebankService {
     let accounts = this.accountService.load(homebankXmlDocument, currencies);
     let payees = this.payeeService.load(homebankXmlDocument);
     let categories = this.categoryService.load(homebankXmlDocument);
-    let favorites  = this.favoritesService.load(homebankXmlDocument, accounts, payees, categories);
+    let favorites = this.favoritesService.load(homebankXmlDocument, accounts, payees, categories);
     let operations = this.operationService.load(homebankXmlDocument, accounts, payees, categories);
 
-    this.setBalances(accounts, operations);
+    this.linkOperationsToAccounts(accounts, operations);
 
     const v = homebankXmlDocument.evaluate("/homebank/@v", homebankXmlDocument, null, XPathResult.NUMBER_TYPE, null).numberValue;
     if (v !== this.SUPPORTED_HOMEBANK_VERSION) {
@@ -59,18 +59,22 @@ export class HomebankService {
       operations);
   }
 
-  public setBalances(accounts: Map<number, Account>, operations: Operation[]): void {
+  private linkOperationsToAccount(account: Account, allHomebankOperations: Operation[]) {
+    let balance = account.initial;
+    account.operations = [];
+    allHomebankOperations.filter(operation => {
+      return operation.account === account;
+    }).sort((operation1, operation2) => operation1.date - operation2.date)
+      .map(operation => {
+        balance += operation.amount;
+        account.operations.push(operation);
+      });
+    account.balance = balance;
+  }
+
+  public linkOperationsToAccounts(accounts: Map<number, Account>, operations: Operation[]): void {
     accounts.forEach(account => {
-      let balance = account.initial;
-      operations.filter(operation => {
-        return operation.account === account;
-      }).sort((a1, a2) => a1.date - a2.date)
-        .map(operation => {
-          balance += operation.amount;
-          operation.balance = balance;
-          account.operations.push(operation);
-        });
-      account.balance = balance;
+      this.linkOperationsToAccount(account, operations);
     })
   }
 
@@ -90,5 +94,27 @@ export class HomebankService {
     } else {
       throw new DOMException("No home bank file loaded");
     }
+  }
+
+  public addOperation(account: Account,
+                      date: string,
+                      payee: string,
+                      category: string,
+                      wording: string,
+                      amount: number): void {
+    let operations = this.homebank!.operations;
+    operations.push(new Operation(
+      this.operationService.stringToHomebankDate(date),
+      amount,
+      account,
+      undefined,
+      undefined,
+      undefined,
+      this.payeeService.getOrAdd(this.homebank!.payees, payee),
+      this.categoryService.getOrAdd(this.homebank!.categories, category),
+      wording,
+      undefined,
+      undefined));
+    this.linkOperationsToAccount(account, operations);
   }
 }
