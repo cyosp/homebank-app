@@ -5,11 +5,15 @@ import {Operation} from "../../model/operation";
 import {Homebank} from "../../model/homebank";
 import {ensure} from "../../utils";
 import {Account} from "../../model/account";
+import { NgIf, NgFor, NgClass, CurrencyPipe, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-operations',
-  templateUrl: './operations.component.html',
-  styleUrls: ['./operations.component.sass']
+    selector: 'app-operations',
+    templateUrl: './operations.component.html',
+    styleUrls: ['./operations.component.sass'],
+    standalone: true,
+    imports: [NgIf, NgFor, NgClass, FormsModule, CurrencyPipe, DatePipe]
 })
 export class OperationsComponent implements OnInit, OnDestroy {
   private DAYS_BETWEEN_JC_AND_FIRST_JANUARY_1970 = 719163;

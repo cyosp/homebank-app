@@ -1,11 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SharedDataService} from "../../service/shared-data.service";
 import {Account} from "../../model/account";
+import { NgIf, NgFor, CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-accounts',
-  templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.sass']
+    selector: 'app-accounts',
+    templateUrl: './accounts.component.html',
+    styleUrls: ['./accounts.component.sass'],
+    standalone: true,
+    imports: [NgIf, NgFor, RouterLink, CurrencyPipe]
 })
 export class AccountsComponent implements OnInit, OnDestroy {
   accounts: Map<number, Account> | null;

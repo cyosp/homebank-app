@@ -1,15 +1,20 @@
 import {Component} from '@angular/core';
 import {HomebankService} from "../../service/homebank.service";
 import {SharedDataService} from "../../service/shared-data.service";
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {faRightFromBracket, faSave, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {saveAs} from 'file-saver';
+import { NgIf } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.sass']
+    selector: 'app-root',
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.sass'],
+    standalone: true,
+    imports: [NgIf, FaIconComponent, NgbCollapse, RouterOutlet]
 })
 export class MainComponent {
   isTogglerCollapsed: boolean;
