@@ -1,11 +1,12 @@
 <div *ngIf="operations" class="container">
   <div class="row custom-row header">
-    <span class="col-4 order-1 col-lg-2 order-lg-1" i18n="@@operations-date">Date</span>
-    <span class="col-4 order-2 col-lg-2 order-lg-1" i18n="@@operations-payee">Payee</span>
-    <span class="col-4 order-2 col-lg-2 order-lg-1" i18n="@@operations-category">Category</span>
-    <span class="col-4 order-1 col-lg-2 order-lg-1" i18n="@@operations-wording">Wording</span>
-    <span class="col-4 order-1 col-lg-2 order-lg-1" i18n="@@operations-amount">Amount</span>
-    <span class="col-4 order-2 col-lg-2 order-lg-1" i18n="@@operations-balance">Balance</span>
+    <span class="col-3 order-1 col-lg-1 order-lg-1" i18n="@@operations-date">Date</span>
+    <span class="col-3 order-1 col-lg-1 order-lg-1" i18n="@@operations-payment-mode">Payment mode</span>
+    <span class="col-3 order-2 col-lg-3 order-lg-1" i18n="@@operations-payee">Payee</span>
+    <span class="col-3 order-2 col-lg-2 order-lg-1" i18n="@@operations-category">Category</span>
+    <span class="col-6 order-2 col-lg-3 order-lg-1" i18n="@@operations-wording">Wording</span>
+    <span class="col-3 order-1 col-lg-1 order-lg-1" i18n="@@operations-amount">Amount</span>
+    <span class="col-3 order-1 col-lg-1 order-lg-1" i18n="@@operations-balance">Balance</span>
   </div>
   <!-- TODO Avoid n calls to isInFuture() -->
   <div class="row custom-row"
@@ -19,34 +20,42 @@
        'first-row-in-future': first && isInFuture(operation.date),
        'last-row-in-past': last && !isInFuture(operation.date)
        }">
-    <span class="col-4 order-1 col-lg-2 order-lg-1">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</span>
-    <span class="col-4 order-2 col-lg-2 order-lg-1">{{ operation.payee?.name }}</span>
-    <span class="col-4 order-2 col-lg-2 order-lg-1">{{ operation.category?.name }}</span>
-    <span class="col-4 order-1 col-lg-2 order-lg-1">{{ operation.wording }}</span>
+    <span class="col-3 order-1 col-lg-1 order-lg-1">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</span>
+    <span class="col-3 order-1 col-lg-1 order-lg-1">
+      <img *ngIf="operation.paymode !== undefined" id="hb-navbar-brand" src="assets/homebank/payment-mode/{{ getPaymentModeFile(operation.paymode) }}"
+           alt="{{defaultPaymentModeName(operation.paymode)}}">
+    </span>
+    <span class="col-3 order-2 col-lg-3 order-lg-1">{{ operation.payee?.name }}</span>
+    <span class="col-3 order-2 col-lg-2 order-lg-1">{{ operation.category?.name }}</span>
+    <span class="col-6 order-2 col-lg-3 order-lg-1">{{ operation.wording }}</span>
     <span
-      class="col-4 order-1 col-lg-2 order-lg-1 align-self-center amount">{{ operation.amount | currency:operation.account.currency.iso }}</span>
+      class="col-3 order-1 col-lg-1 order-lg-1 align-self-center amount">{{ operation.amount | currency:operation.account.currency.iso }}</span>
     <span
-      class="col-4 order-2 col-lg-2 order-lg-1 align-self-center balance">{{ operation.balance | currency:operation.account.currency.iso }}</span>
+      class="col-3 order-1 col-lg-1 order-lg-1 align-self-center balance">{{ operation.balance | currency:operation.account.currency.iso }}</span>
   </div>
   <form class="row footer bg-light">
     <div class="row row-add-operation-div">
-      <span class="col-4 order-1 col-lg-2 order-lg-1 align-self-center row-add-operation-span">
+      <span class="col-3 order-1 col-lg-1 order-lg-1 align-self-center row-add-operation-span">
         <input type="date" name="add-operation-date" class="form-control"
                [(ngModel)]="addOperationDate" value="{{addOperationDate}}"/>
       </span>
-      <span class="col-4 order-2 col-lg-2 order-lg-1 align-self-center row-add-operation-span">
-        <input type="text" name="add-operation-payee" class="form-control" [(ngModel)]="addOperationPayee" placeholder="Payee" i18n-placeholder="@@operations-payee"/>
+      <span class="col-3 order-2 col-lg-3 order-lg-1 align-self-center row-add-operation-span">
+        <input type="text" name="add-operation-payee" class="form-control" [(ngModel)]="addOperationPayee"
+               placeholder="Payee" i18n-placeholder="@@operations-payee"/>
       </span>
-      <span class="col-4 order-2 col-lg-2 order-lg-1 align-self-center row-add-operation-span">
-        <input type="text" name="add-operation-category" class="form-control" [(ngModel)]="addOperationCategory" placeholder="Category" i18n-placeholder="@@operations-category"/>
+      <span class="col-3 order-2 col-lg-2 order-lg-1 align-self-center row-add-operation-span">
+        <input type="text" name="add-operation-category" class="form-control" [(ngModel)]="addOperationCategory"
+               placeholder="Category" i18n-placeholder="@@operations-category"/>
       </span>
-      <span class="col-4 order-1 col-lg-2 order-lg-1 align-self-center row-add-operation-span">
-        <input type="text" name="add-operation-wording" class="form-control" [(ngModel)]="addOperationWording" placeholder="Wording" i18n-placeholder="@@operations-wording"/>
+      <span class="col-6 order-2 col-lg-3 order-lg-1 align-self-center row-add-operation-span">
+        <input type="text" name="add-operation-wording" class="form-control" [(ngModel)]="addOperationWording"
+               placeholder="Wording" i18n-placeholder="@@operations-wording"/>
       </span>
-      <span class="col-4 order-1 col-lg-2 order-lg-1 align-self-center row-add-operation-span">
-        <input type="number" name="add-operation-amount" class="form-control" [(ngModel)]="addOperationAmount" placeholder="0"/>
+      <span class="col-3 order-1 col-lg-1 order-lg-1 align-self-center row-add-operation-span">
+        <input type="number" name="add-operation-amount" class="form-control" [(ngModel)]="addOperationAmount"
+               placeholder="0"/>
       </span>
-      <span class="col-4 order-2 col-lg-2 order-lg-1 align-self-center add-span row-add-operation-span">
+      <span class="col-3 order-1 col-lg-1 order-lg-1 align-self-center add-span row-add-operation-span">
         <button type="button" class="btn add-btn" (click)="add()">+</button>
       </span>
     </div>

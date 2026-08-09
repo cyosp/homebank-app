@@ -103,6 +103,64 @@ export class OperationsComponent implements OnInit, OnDestroy {
     this.setOperations(account);
   }
 
+  getPaymentModeFile(paymode: number): string {
+    switch (paymode) {
+      case 1:
+        return "hb-pm-ccard.svg";
+      case 2:
+        return "hb-pm-check.svg";
+      case 3:
+        return "hb-pm-cash.svg";
+      case 4:
+        return "hb-pm-transfer.svg";
+      case 6:
+        return "hb-pm-dcard.svg";
+      case 7:
+        return "hb-pm-standingorder.svg";
+      case 8:
+        return "hb-pm-epayment.svg";
+      case 9:
+        return "hb-pm-deposit.svg";
+      case 10:
+        return "hb-pm-fifee.svg";
+      case 11:
+        return "hb-pm-directdebit.svg";
+      case 12:
+        return "hb-pm-mobphone.svg";
+      default:
+        return String(paymode);
+    }
+  }
+
+  defaultPaymentModeName(paymode: number): string {
+    switch (paymode) {
+      case 1:
+        return "Credit card";
+      case 2:
+        return "Check";
+      case 3:
+        return "Cash";
+      case 4:
+        return "Bank transfer";
+      case 6:
+        return "Debit card";
+      case 7:
+        return "Standing order";
+      case 8:
+        return "Electronic payment";
+      case 9:
+        return "Deposit";
+      case 10:
+        return "FI fee";
+      case 11:
+        return "Direct debit";
+      case 12:
+        return "Mobile phone";
+      default:
+        return String(paymode);
+    }
+  }
+
   ngOnDestroy(): void {
     this.operations = null;
   }
