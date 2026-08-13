@@ -51,14 +51,18 @@ export class CategoryService {
     return xml;
   }
 
-  private addNew(categories: Map<number, Category>, value: string): Category {
+  private addNew(categories: Map<number, Category>, value: string | undefined): Category | undefined {
+    if (value === undefined) {
+      return undefined;
+    }
+
     let maxKey = [...categories.keys()]
       .reduce((key1, key2) => key1 < key2 ? key2 : key1);
     let newKey = maxKey + 1;
     return categories.set(newKey, new Category(newKey, null, undefined, value)).get(newKey)!;
   }
 
-  public getOrAdd(categories: Map<number, Category>, value: string): Category {
+  public getOrAdd(categories: Map<number, Category>, value: string | undefined): Category | undefined {
     return [...categories.values()].find((category: Category) => category.name === value) || this.addNew(categories, value);
   }
 }

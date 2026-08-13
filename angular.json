@@ -42,7 +42,9 @@
               "node_modules/bootstrap/scss/bootstrap.scss",
               "src/styles.sass"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+            ]
           },
           "configurations": {
             "fr": {

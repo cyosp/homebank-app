@@ -98,9 +98,10 @@ export class HomebankService {
 
   public addOperation(account: Account,
                       date: string,
-                      payee: string,
-                      category: string,
-                      wording: string,
+                      paymentMode: number | undefined,
+                      payee: string | undefined,
+                      category: string | undefined,
+                      wording: string | undefined,
                       amount: number): void {
     let operations = this.homebank!.operations;
     operations.push(new Operation(
@@ -108,7 +109,7 @@ export class HomebankService {
       amount,
       account,
       undefined,
-      undefined,
+      paymentMode,
       undefined,
       this.payeeService.getOrAdd(this.homebank!.payees, payee),
       this.categoryService.getOrAdd(this.homebank!.categories, category),

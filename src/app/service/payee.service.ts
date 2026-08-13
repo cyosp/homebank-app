@@ -38,14 +38,18 @@ export class PayeeService {
     return xml;
   }
 
-  private addNew(payees: Map<number, Payee>, value: string): Payee {
+  private addNew(payees: Map<number, Payee>, value: string | undefined): Payee | undefined {
+    if (value === undefined) {
+      return undefined;
+    }
+
     let maxKey = [...payees.keys()]
       .reduce((key1, key2) => key1 < key2 ? key2 : key1);
     let newKey = maxKey + 1;
     return payees.set(newKey, new Payee(newKey, value)).get(newKey)!;
   }
 
-  public getOrAdd(payees: Map<number, Payee>, value: string): Payee {
+  public getOrAdd(payees: Map<number, Payee>, value: string | undefined): Payee | undefined {
     return [...payees.values()].find((payee: Payee) => payee.name === value) || this.addNew(payees, value);
   }
 }

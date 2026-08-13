@@ -10,6 +10,20 @@ import {FormsModule} from '@angular/forms';
 import {HomebankService} from "../../service/homebank.service";
 import {OperationService} from "../../service/operation.service";
 
+enum PaymentMode {
+  CREDIT_CARD = 1,
+  CHECK = 2,
+  CASH = 3,
+  BANK_TRANSFER = 4,
+  DEBIT_CARD = 6,
+  STANDING_ORDER = 7,
+  ELECTRONIC_PAYMENT = 8,
+  DEPOSIT = 9,
+  FI_FEE = 10,
+  DIRECT_DEBIT = 11,
+  MOBILE_PHONE = 12
+}
+
 @Component({
   selector: 'app-operations',
   templateUrl: './operations.component.html',
@@ -23,9 +37,10 @@ export class OperationsComponent implements OnInit, OnDestroy {
   operations: Operation[] | null;
 
   addOperationDate: string = this.formatDate(new Date);
-  addOperationPayee: string = "";
-  addOperationCategory: string = "";
-  addOperationWording: string = "";
+  addOperationPaymentMode: number | undefined;
+  addOperationPayee: string | undefined;
+  addOperationCategory: string | undefined;
+  addOperationWording: string | undefined;
   addOperationAmount: number = 0;
 
   constructor(private route: ActivatedRoute,
@@ -96,6 +111,7 @@ export class OperationsComponent implements OnInit, OnDestroy {
     this.homebankService.addOperation(
       account,
       this.addOperationDate,
+      this.addOperationPaymentMode,
       this.addOperationPayee,
       this.addOperationCategory,
       this.addOperationWording,
@@ -103,62 +119,91 @@ export class OperationsComponent implements OnInit, OnDestroy {
     this.setOperations(account);
   }
 
-  getPaymentModeFile(paymode: number): string {
+  getPaymentModeImageUrlPath(paymode: number | undefined): string {
+    return "assets/homebank/payment-mode/" + this.getPaymentModeFile(paymode);
+  }
+
+  getPaymentModeFile(paymode: number | undefined): string {
     switch (paymode) {
-      case 1:
+      case undefined:
+        return "hb-pm-none.svg";
+      case PaymentMode.CREDIT_CARD:
         return "hb-pm-ccard.svg";
-      case 2:
+      case PaymentMode.CHECK:
         return "hb-pm-check.svg";
-      case 3:
+      case PaymentMode.CASH:
         return "hb-pm-cash.svg";
-      case 4:
+      case PaymentMode.BANK_TRANSFER:
         return "hb-pm-transfer.svg";
-      case 6:
+      case PaymentMode.DEBIT_CARD:
         return "hb-pm-dcard.svg";
-      case 7:
+      case PaymentMode.STANDING_ORDER:
         return "hb-pm-standingorder.svg";
-      case 8:
+      case PaymentMode.ELECTRONIC_PAYMENT:
         return "hb-pm-epayment.svg";
-      case 9:
+      case PaymentMode.DEPOSIT:
         return "hb-pm-deposit.svg";
-      case 10:
+      case PaymentMode.FI_FEE:
         return "hb-pm-fifee.svg";
-      case 11:
+      case PaymentMode.DIRECT_DEBIT:
         return "hb-pm-directdebit.svg";
-      case 12:
+      case PaymentMode.MOBILE_PHONE:
         return "hb-pm-mobphone.svg";
       default:
         return String(paymode);
     }
   }
 
-  defaultPaymentModeName(paymode: number): string {
+  defaultPaymentModeName(paymode: number | undefined): string {
     switch (paymode) {
-      case 1:
+      case undefined:
+        return "";
+      case PaymentMode.CREDIT_CARD:
         return "Credit card";
-      case 2:
+      case PaymentMode.CHECK:
         return "Check";
-      case 3:
+      case PaymentMode.CASH:
         return "Cash";
-      case 4:
+      case PaymentMode.BANK_TRANSFER:
         return "Bank transfer";
-      case 6:
+      case PaymentMode.DEBIT_CARD:
         return "Debit card";
-      case 7:
+      case PaymentMode.STANDING_ORDER:
         return "Standing order";
-      case 8:
+      case PaymentMode.ELECTRONIC_PAYMENT:
         return "Electronic payment";
-      case 9:
+      case PaymentMode.DEPOSIT:
         return "Deposit";
-      case 10:
+      case PaymentMode.FI_FEE:
         return "FI fee";
-      case 11:
+      case PaymentMode.DIRECT_DEBIT:
         return "Direct debit";
-      case 12:
+      case PaymentMode.MOBILE_PHONE:
         return "Mobile phone";
       default:
         return String(paymode);
     }
+  }
+
+  getPaymentModes(): (number | undefined)[] {
+    return [
+      undefined,
+      PaymentMode.CREDIT_CARD,
+      PaymentMode.CHECK,
+      PaymentMode.CASH,
+      PaymentMode.BANK_TRANSFER,
+      PaymentMode.DEBIT_CARD,
+      PaymentMode.STANDING_ORDER,
+      PaymentMode.ELECTRONIC_PAYMENT,
+      PaymentMode.DEPOSIT,
+      PaymentMode.FI_FEE,
+      PaymentMode.DIRECT_DEBIT,
+      PaymentMode.MOBILE_PHONE
+    ]
+  }
+
+  setAddOperationPaymentMode(paymentMode: number | undefined) {
+    this.addOperationPaymentMode = paymentMode;
   }
 
   ngOnDestroy(): void {

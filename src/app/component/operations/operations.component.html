@@ -22,8 +22,9 @@
        }">
     <span class="col-3 order-1 col-lg-1 order-lg-1">{{ dateToGregorian(operation.date) | date:'dd/MM/yyyy' }}</span>
     <span class="col-3 order-1 col-lg-1 order-lg-1">
-      <img *ngIf="operation.paymode !== undefined" id="hb-navbar-brand" src="assets/homebank/payment-mode/{{ getPaymentModeFile(operation.paymode) }}"
-           alt="{{defaultPaymentModeName(operation.paymode)}}">
+      <img *ngIf="operation.paymode !== undefined"
+           src="{{ getPaymentModeImageUrlPath(operation.paymode) }}"
+           alt="{{ defaultPaymentModeName(operation.paymode) }}">
     </span>
     <span class="col-3 order-2 col-lg-3 order-lg-1">{{ operation.payee?.name }}</span>
     <span class="col-3 order-2 col-lg-2 order-lg-1">{{ operation.category?.name }}</span>
@@ -38,6 +39,22 @@
       <span class="col-3 order-1 col-lg-1 order-lg-1 align-self-center row-add-operation-span">
         <input type="date" name="add-operation-date" class="form-control"
                [(ngModel)]="addOperationDate" value="{{addOperationDate}}"/>
+      </span>
+      <span class="col-3 order-1 col-lg-1 order-lg-1 align-self-center row-add-operation-span">
+        <div class="dropdown dropup">
+          <button class="btn btn-custom dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <img src="{{ getPaymentModeImageUrlPath(addOperationPaymentMode) }}"
+                 alt="{{ defaultPaymentModeName(addOperationPaymentMode) }}">
+          </button>
+          <ul class="dropdown-menu dropdown-menu-custom">
+            <li *ngFor="let paymentMode of getPaymentModes()" [value]="paymentMode">
+                <button class="dropdown-item" type="button" (click)="setAddOperationPaymentMode(paymentMode)">
+                 <img src="{{ getPaymentModeImageUrlPath(paymentMode) }}"
+                      alt="{{ defaultPaymentModeName(paymentMode)}} ">
+                </button>
+            </li>
+          </ul>
+        </div>
       </span>
       <span class="col-3 order-2 col-lg-3 order-lg-1 align-self-center row-add-operation-span">
         <input type="text" name="add-operation-payee" class="form-control" [(ngModel)]="addOperationPayee"
@@ -56,7 +73,7 @@
                placeholder="0"/>
       </span>
       <span class="col-3 order-1 col-lg-1 order-lg-1 align-self-center add-span row-add-operation-span">
-        <button type="button" class="btn add-btn" (click)="add()">+</button>
+        <button type="button" class="btn btn-custom add-btn" (click)="add()">+</button>
       </span>
     </div>
   </form>
