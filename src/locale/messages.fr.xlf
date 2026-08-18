@@ -3,8 +3,26 @@
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <!-- main -->
-      <trans-unit id="main-click-to-open-a-file" datatype="html">
-        <target>Cliquer pour ouvrir un fichier HomeBank</target>
+      <trans-unit id="main-open-label" datatype="html">
+        <target>Ouvrir un fichier HomeBank</target>
+      </trans-unit>
+      <trans-unit id="main-webdav-url" datatype="html">
+        <target>https://web.dav/path</target>
+      </trans-unit>
+      <trans-unit id="main-webdav-login" datatype="html">
+        <target>Identifiant</target>
+      </trans-unit>
+      <trans-unit id="main-webdav-password" datatype="html">
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="main-webdav-load" datatype="html">
+        <target>Via WebDav</target>
+      </trans-unit>
+      <trans-unit id="main-open-or" datatype="html">
+        <target>Ou</target>
+      </trans-unit>
+      <trans-unit id="main-open-local-file" datatype="html">
+        <target>Depuis un fichier local</target>
       </trans-unit>
       <!-- accounts -->
       <trans-unit id="accounts-account" datatype="html">
