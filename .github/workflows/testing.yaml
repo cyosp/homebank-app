@@ -1,6 +1,9 @@
 name: Testing app and Docker image (amd64 + armv7)
 
-on: push
+on:
+  push:
+    branches:
+      - testing
 
 jobs:
   release:
