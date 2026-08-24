@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "homebank": {
+    "homebank-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -26,7 +26,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/homebank",
+            "outputPath": "dist/homebank-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -80,13 +80,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "homebank:build:production"
+              "browserTarget": "homebank-app:build:production"
             },
             "development": {
-              "browserTarget": "homebank:build:development"
+              "browserTarget": "homebank-app:build:development"
             },
             "fr": {
-              "browserTarget": "homebank:build:fr"
+              "browserTarget": "homebank-app:build:fr"
             }
           },
           "defaultConfiguration": "development"
@@ -94,7 +94,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "homebank:build"
+            "browserTarget": "homebank-app:build"
           }
         },
         "test": {

@@ -7,13 +7,13 @@ RUN apk upgrade \
         nginx \
         bash
 
-RUN mkdir -p /run/nginx /var/www/html /var/lib/homebank/data
+RUN mkdir -p /run/nginx /var/www/html /var/lib/homebank-app/data
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
 RUN rm /etc/nginx/http.d/default.conf
-COPY docker/nginx.conf /etc/nginx/http.d/homebank.conf
+COPY docker/nginx.conf /etc/nginx/http.d/homebank-app.conf
 
-COPY dist/homebank /var/www/html
+COPY dist/homebank-app /var/www/html
 
 EXPOSE 80
 
