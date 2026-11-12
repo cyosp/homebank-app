@@ -5,7 +5,8 @@ LABEL maintainer=cyosp@cyosp.com
 RUN apk upgrade \
     && apk add \
         nginx \
-        bash
+        bash \
+        tzdata
 
 RUN mkdir -p /run/nginx /var/www/html /var/lib/homebank-app/data
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
