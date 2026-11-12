@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.2.0 (2026-11-12)
+ * Add time zone support to Docker image
+
 ##### 1.1.0 (2026-10-30)
  * Build for linux/arm64/v8
 
